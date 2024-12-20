@@ -1,6 +1,10 @@
 class BrainStructure:
     def __init__(self, neurons, connections):
-        self.neurons = neurons
+        if not isinstance(neurons, (int, np.ndarray)) or (isinstance(neurons, int) and neurons <= 0):
+            raise ValueError("neurons must be a positive integer or valid numpy array")
+        if not isinstance(connections, np.ndarray):
+            raise ValueError("connections must be a numpy array")
+        self.neurons = neurons if isinstance(neurons, np.ndarray) else np.zeros(neurons)
         self.connections = connections
 
     def decision_making(self, inputs):
