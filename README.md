@@ -27,6 +27,9 @@ Represent complex quantum states and processes using a graphical language, facil
 ### Swarm Intelligence
 Leverages the collective behavior of decentralized, self-organized systems to optimize the performance and scalability of the neural network.
 
+### Brain Structure
+Integrates a brain structure model into the neural network, enhancing decision-making and state updates for agents and the environment.
+
 ## Setup and Running Instructions
 
 1. **Clone the repository**:
