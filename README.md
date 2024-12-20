@@ -130,29 +130,36 @@ Leverages the collective behavior of decentralized, self-organized systems to op
    Expand-Archive -Path "$MahoutPath\apache-mahout.zip" -DestinationPath $MahoutPath
    ```
 
-## Apache Avalanche Configuration
+## Apache Iceberg Configuration
 
-1. **Download and Configure Apache Avalanche**:
-   ```powershell
-   Write-Output "Downloading and configuring Apache Avalanche..."
-   $AvalancheVersion = "1.0.0"
-   $AvalancheDownloadURL = "https://archive.apache.org/dist/avalanche/$AvalancheVersion/apache-avalanche-$AvalancheVersion-bin.zip"
-   $AvalanchePath = "C:\Apache\Avalanche"
-   Invoke-WebRequest -Uri $AvalancheDownloadURL -OutFile "$AvalanchePath\apache-avalanche.zip"
-   Expand-Archive -Path "$AvalanchePath\apache-avalanche.zip" -DestinationPath $AvalanchePath
+1. **Add Iceberg dependencies to `build.gradle`**:
+   ```gradle
+   dependencies {
+       implementation 'org.apache.iceberg:iceberg-core:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-spark3-runtime:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-hive-metastore:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-parquet:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-flink-runtime:0.12.0'
+   }
+   ```
+
+2. **Create `iceberg-config.properties`**:
+   ```properties
+   iceberg.catalog=default
+   iceberg.warehouse=/path/to/warehouse
    ```
 
 ## Integration Testing
 
 1. **Integrate Components with IIS**:
    ```powershell
-   Write-Output "Configuring integration between IIS, Ignite, Mahout, and Avalanche..."
+   Write-Output "Configuring integration between IIS, Ignite, Mahout, and Iceberg..."
    Set-Content -Path "$SitePath\Web.config" -Value "
    <configuration>
        <appSettings>
            <add key='ApacheIgnitePath' value='$IgnitePath'/>
            <add key='ApacheMahoutPath' value='$MahoutPath'/>
-           <add key='ApacheAvalanchePath' value='$AvalanchePath'/>
+           <add key='ApacheIcebergPath' value='$IcebergPath'/>
        </appSettings>
    </configuration>
    "
@@ -164,7 +171,7 @@ Leverages the collective behavior of decentralized, self-organized systems to op
    Start-Service W3SVC
    Start-Process -FilePath "$IgnitePath\bin\ignite.bat"
    Start-Process -FilePath "$MahoutPath\bin\mahout.bat"
-   Start-Process -FilePath "$AvalanchePath\bin\avalanche.bat"
+   Start-Process -FilePath "$IcebergPath\bin\iceberg.bat"
    ```
 
 ## Testing

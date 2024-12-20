@@ -23,10 +23,10 @@ class TestIISApacheIntegration(unittest.TestCase):
         self.assertTrue(os.path.exists(mahout_path))
         self.assertTrue(os.path.exists(os.path.join(mahout_path, 'bin', 'mahout.bat')))
 
-    def test_apache_avalanche_configuration(self):
-        avalanche_path = "C:\\Apache\\Avalanche"
-        self.assertTrue(os.path.exists(avalanche_path))
-        self.assertTrue(os.path.exists(os.path.join(avalanche_path, 'bin', 'avalanche.bat')))
+    def test_apache_iceberg_configuration(self):
+        iceberg_path = "C:\\Apache\\Iceberg"
+        self.assertTrue(os.path.exists(iceberg_path))
+        self.assertTrue(os.path.exists(os.path.join(iceberg_path, 'bin', 'iceberg.bat')))
 
     def test_integration(self):
         site_path = "C:\\inetpub\\wwwroot\\NeuralNetworkCore"
@@ -36,7 +36,7 @@ class TestIISApacheIntegration(unittest.TestCase):
             content = file.read()
             self.assertIn('ApacheIgnitePath', content)
             self.assertIn('ApacheMahoutPath', content)
-            self.assertIn('ApacheAvalanchePath', content)
+            self.assertIn('ApacheIcebergPath', content)
 
 if __name__ == '__main__':
     unittest.main()

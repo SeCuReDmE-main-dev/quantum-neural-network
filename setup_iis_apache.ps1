@@ -32,23 +32,24 @@ $MahoutPath = "C:\Apache\Mahout"
 Invoke-WebRequest -Uri $MahoutDownloadURL -OutFile "$MahoutPath\apache-mahout.zip"
 Expand-Archive -Path "$MahoutPath\apache-mahout.zip" -DestinationPath $MahoutPath
 
-# Step 4: Download and Configure Apache Avalanche
-Write-Output "Downloading and configuring Apache Avalanche..."
-$AvalancheVersion = "1.0.0"
-$AvalancheDownloadURL = "https://archive.apache.org/dist/avalanche/$AvalancheVersion/apache-avalanche-$AvalancheVersion-bin.zip"
-$AvalanchePath = "C:\Apache\Avalanche"
-Invoke-WebRequest -Uri $AvalancheDownloadURL -OutFile "$AvalanchePath\apache-avalanche.zip"
-Expand-Archive -Path "$AvalanchePath\apache-avalanche.zip" -DestinationPath $AvalanchePath
+# Step 4: Download and Configure Apache Iceberg
+Write-Output "Downloading and configuring Apache Iceberg..."
+$IcebergVersion = "0.12.0"
+$IcebergDownloadURL = "https://archive.apache.org/dist/iceberg/$IcebergVersion/apache-iceberg-$IcebergVersion-bin.zip"
+$IcebergPath = "C:\Apache\Iceberg"
+New-Item -ItemType Directory -Force -Path $IcebergPath
+Invoke-WebRequest -Uri $IcebergDownloadURL -OutFile "$IcebergPath\apache-iceberg.zip"
+Expand-Archive -Path "$IcebergPath\apache-iceberg.zip" -DestinationPath $IcebergPath
 
 # Step 5: Integrate Components with IIS
-Write-Output "Configuring integration between IIS, Ignite, Mahout, and Avalanche..."
+Write-Output "Configuring integration between IIS, Ignite, Mahout, and Iceberg..."
 # Example configuration for linking Ignite and Mahout
 Set-Content -Path "$SitePath\Web.config" -Value "
 <configuration>
     <appSettings>
         <add key='ApacheIgnitePath' value='$IgnitePath'/>
         <add key='ApacheMahoutPath' value='$MahoutPath'/>
-        <add key='ApacheAvalanchePath' value='$AvalanchePath'/>
+        <add key='ApacheIcebergPath' value='$IcebergPath'/>
     </appSettings>
 </configuration>
 "
@@ -58,6 +59,11 @@ Write-Output "Starting and validating services..."
 Start-Service W3SVC
 Start-Process -FilePath "$IgnitePath\bin\ignite.bat"
 Start-Process -FilePath "$MahoutPath\bin\mahout.bat"
-Start-Process -FilePath "$AvalanchePath\bin\avalanche.bat"
+try {
+    Start-Process -FilePath "$IcebergPath\bin\iceberg.bat" -ErrorAction Stop
+} catch {
+    Write-Error "Failed to start Iceberg service: $_"
+    exit 1
+}
 
-Write-Output "Setup Complete. IIS with Apache Ignite, Mahout, and Avalanche is ready for use."
+Write-Output "Setup Complete. IIS with Apache Ignite, Mahout, and Iceberg is ready for use."
