@@ -1,11 +1,13 @@
 import numpy as np
 from fred_handler.brain_structure import BrainStructure
+from tools.quantum_circuit_designer import QuantumCircuitDesigner
 
 class AgentBasedModeling:
     def __init__(self, agents, environment, brain_structure):
         self.agents = agents
         self.environment = environment
         self.brain_structure = brain_structure
+        self.qc_designer = QuantumCircuitDesigner()
 
     def simulate(self, steps):
         for _ in range(steps):
