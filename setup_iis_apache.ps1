@@ -37,6 +37,7 @@ Write-Output "Downloading and configuring Apache Iceberg..."
 $IcebergVersion = "0.12.0"
 $IcebergDownloadURL = "https://archive.apache.org/dist/iceberg/$IcebergVersion/apache-iceberg-$IcebergVersion-bin.zip"
 $IcebergPath = "C:\Apache\Iceberg"
+New-Item -ItemType Directory -Force -Path $IcebergPath
 Invoke-WebRequest -Uri $IcebergDownloadURL -OutFile "$IcebergPath\apache-iceberg.zip"
 Expand-Archive -Path "$IcebergPath\apache-iceberg.zip" -DestinationPath $IcebergPath
 
