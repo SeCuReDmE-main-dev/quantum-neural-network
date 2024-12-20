@@ -78,9 +78,12 @@ class TestFredHandler(unittest.TestCase):
         pass
 
     def test_agent_based_modeling_with_brain_structure(self):
-        # Add tests for integration of brain structure with AgentBasedModeling
+        initial_state = self.agents[0].state.copy()
         self.agent_based_modeling.simulate(steps=10)
-        self.assertTrue(True)  # Add appropriate assertions based on the expected behavior
+        self.assertFalse(np.array_equal(initial_state, self.agents[0].state), 
+            "Agent state should change after simulation")
+        self.assertEqual(len(self.agents[0].state), 4, 
+            "Agent state dimensionality should remain consistent")
 
     def test_quantum_agent_with_brain_structure(self):
         # Add tests for integration of brain structure with QuantumAgent
