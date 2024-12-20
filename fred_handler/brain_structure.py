@@ -4,9 +4,11 @@ class BrainStructure:
         self.connections = connections
 
     def decision_making(self, inputs):
-        # Implement decision-making logic based on inputs and brain structure
-        pass
+        # Basic implementation example
+        processed_inputs = np.dot(self.connections, inputs)
+        return np.tanh(processed_inputs)  # activation function
 
     def state_update(self, new_state):
-        # Implement state update logic based on new state and brain structure
-        pass
+        # Basic implementation example
+        self.neurons = np.multiply(self.neurons, new_state)
+        return self.neurons
