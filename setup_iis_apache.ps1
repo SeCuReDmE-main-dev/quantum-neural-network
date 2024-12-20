@@ -59,6 +59,11 @@ Write-Output "Starting and validating services..."
 Start-Service W3SVC
 Start-Process -FilePath "$IgnitePath\bin\ignite.bat"
 Start-Process -FilePath "$MahoutPath\bin\mahout.bat"
-Start-Process -FilePath "$IcebergPath\bin\iceberg.bat"
+try {
+    Start-Process -FilePath "$IcebergPath\bin\iceberg.bat" -ErrorAction Stop
+} catch {
+    Write-Error "Failed to start Iceberg service: $_"
+    exit 1
+}
 
 Write-Output "Setup Complete. IIS with Apache Ignite, Mahout, and Iceberg is ready for use."
