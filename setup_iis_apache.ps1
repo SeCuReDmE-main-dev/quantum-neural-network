@@ -50,7 +50,10 @@ Set-Content -Path "$SitePath\Web.config" -Value "
         <add key='ApacheIgnitePath' value='$IgnitePath'/>
         <add key='ApacheMahoutPath' value='$MahoutPath'/>
         <add key='ApacheIcebergPath' value='$IcebergPath'/>
+        <add key='DatabaseCenterPath' value='C:\Users\Owner\Desktop\database center'/>
     </appSettings>
+    <connectionStrings>
+    </connectionStrings>
 </configuration>
 "
 

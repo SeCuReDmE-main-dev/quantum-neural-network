@@ -38,5 +38,26 @@ class TestIISApacheIntegration(unittest.TestCase):
             self.assertIn('ApacheMahoutPath', content)
             self.assertIn('ApacheIcebergPath', content)
 
+    def test_application_deployment(self):
+        site_path = "C:\\inetpub\\wwwroot\\NeuralNetworkCore"
+        self.assertTrue(os.path.exists(site_path))
+        self.assertTrue(os.path.exists(os.path.join(site_path, 'index.html')))
+
+    def test_database_integration(self):
+        site_path = "C:\\inetpub\\wwwroot\\NeuralNetworkCore"
+        web_config_path = os.path.join(site_path, 'Web.config')
+        self.assertTrue(os.path.exists(web_config_path))
+        with open(web_config_path, 'r') as file:
+            content = file.read()
+            self.assertIn('CerebellumTable', content)
+            self.assertIn('CerebrumTable', content)
+            self.assertIn('CreateBrainTables', content)
+            self.assertIn('HippocampusTable', content)
+            self.assertIn('LimbicSystemTable', content)
+            self.assertIn('NeuralNetworkTable', content)
+            self.assertIn('OccipitalLobeTable', content)
+            self.assertIn('PrefrontalCortexTable', content)
+            self.assertIn('ThalamusTable', content)
+
 if __name__ == '__main__':
     unittest.main()

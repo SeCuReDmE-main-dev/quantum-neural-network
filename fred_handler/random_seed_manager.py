@@ -1,9 +1,11 @@
 import numpy as np
+from mahout import Mahout
 
 class RandomSeedManager:
     def __init__(self, seed=None):
         self.seed = seed
         self.rng = np.random.default_rng(seed)
+        self.mahout = Mahout()
 
     def generate_seed(self):
         self.seed = self.rng.integers(0, 2**32 - 1)

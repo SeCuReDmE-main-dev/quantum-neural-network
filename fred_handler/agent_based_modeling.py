@@ -1,16 +1,14 @@
 import numpy as np
-from fred_handler.brain_structure import BrainStructure
-from tools.quantum_circuit_designer import QuantumCircuitDesigner
+from mahout import Mahout
 
-class AgentBasedModeling:
-    def __init__(self, agents, environment, brain_structure):
+ationclass AgentBasedModeling:
+    def __init__(self, agents, environment, mahout_instance=None):
         self.agents = agents
         self.environment = environment
-        self.brain_structure = brain_structure
-        try:
-            self.qc_designer = QuantumCircuitDesigner()
-        except ImportError as e:
-            raise ImportError("Failed to initialize QuantumCircuitDesigner. Please ensure the quantum-circuit-designer package is properly installed.") from e
+        self.mahout = mahout_instance or Mahout()
+        if not self.mahout.is_initialized():
+            raise RuntimeError("Mahout instance not properly initialized")
+
 
     def simulate(self, steps):
         for _ in range(steps):
