@@ -128,10 +128,16 @@ class TestFredHandler(unittest.TestCase):
         self.assertTrue(hasattr(self.hybrid_model.qf, 'q_device'))
 
     def test_torchquantum_operations_in_quanvolutional_neural_network(self):
-        sample_input = torch.rand(1, 1, 28, 28)
-        output = self.hybrid_model(sample_input)
-        self.assertIsInstance(output, torch.Tensor)
-        self.assertEqual(output.shape[1], 10)
+        def test_torchquantum_operations_in_quanvolutional_neural_network(self):
+            sample_input = torch.rand(1, 1, 28, 28)
+            self.assertEqual(sample_input.dim(), 4, "Input tensor must be 4-dimensional")
+            self.assertEqual(sample_input.shape[2:], (28, 28), "Invalid input dimensions")
+            try:
+                output = self.hybrid_model(sample_input)
+                self.assertIsInstance(output, torch.Tensor)
+                self.assertEqual(output.shape[1], 10)
+            except RuntimeError as e:
+                self.fail(f"Model forward pass failed: {str(e)}")
 
     def test_torchquantum_dependencies_in_quanvolutional_neural_network(self):
         self.assertIsNotNone(self.hybrid_model.qf)
