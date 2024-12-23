@@ -87,8 +87,8 @@ class TestFredHandler(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.fred_handler.apply_neutrosophic_logic(np.random.rand(10), -0.7, 0.2, 0.1)
 
-        filtered_data = self.fred_handler.filter_data(np.random.rand(10), 0.7, 0.2, 0.1)
-        self.assertEqual(filtered_data.shape, (10,))
+        filtered_data = self.fred_handler.filter_data(np.array([]), 0.7, 0.2, 0.1)
+        self.assertEqual(filtered_data.size, 0, "Filtered data should be empty for empty input")
 
     def test_visualizer_functionality(self):
         self.visualizer.visualize_qubit_relationships()
