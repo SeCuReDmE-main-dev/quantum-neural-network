@@ -27,6 +27,9 @@ Represent complex quantum states and processes using a graphical language, facil
 ### Swarm Intelligence
 Leverages the collective behavior of decentralized, self-organized systems to optimize the performance and scalability of the neural network.
 
+### Brain Structure
+Integrates a brain structure model into the neural network, enhancing decision-making and state updates for agents and the environment.
+
 ## Setup and Running Instructions
 
 1. **Clone the repository**:
@@ -199,6 +202,46 @@ Leverages the collective behavior of decentralized, self-organized systems to op
    Start-Process -FilePath "$MahoutPath\bin\mahout.bat"
    Start-Process -FilePath "$IcebergPath\bin\iceberg.bat"
    ```
+
+## Integrate quantum circuit designer tool
+
+1. **Clone the quantum circuit designer tool repository**:
+   ```bash
+   git clone https://github.com/Celebrum/quantum-circuit-designer.git
+   cd quantum-circuit-designer
+   ```
+
+2. **Place the tool in the project**:
+   Move the cloned repository to the `tools` directory:
+   ```bash
+   mv quantum-circuit-designer ../tools/
+   ```
+
+3. **Add dependencies**:
+   Update the `build.gradle` file with the necessary dependencies:
+   ```gradle
+   dependencies {
+       implementation 'com.quantum.circuit:quantum-circuit-designer:1.0.0'
+       implementation 'org.qiskit:qiskit-core:0.23.0'
+       implementation 'org.qiskit:qiskit-aer:0.8.0'
+       implementation 'org.qiskit:qiskit-ibmq-provider:0.12.0'
+       implementation 'org.jfree:jfreechart:1.5.3'
+       implementation 'org.jfree:jcommon:1.0.24'
+       implementation 'org.apache.commons:commons-math3:3.6.1'
+       implementation 'org.ejml:ejml-all:0.38'
+       testImplementation 'junit:junit:4.13.2'
+       testImplementation 'org.mockito:mockito-core:3.9.0'
+   }
+   ```
+
+4. **Integrate the tool**:
+   Modify the relevant files in the `fred_handler` and `neural_network` directories to utilize the quantum circuit designer tool.
+
+5. **Update the README**:
+   Add instructions on how to use the integrated quantum circuit designer tool in the `README.md` file.
+
+6. **Test the integration**:
+   Ensure that the integration works correctly by running the existing tests and adding new tests if necessary.
 
 ## Testing
 
