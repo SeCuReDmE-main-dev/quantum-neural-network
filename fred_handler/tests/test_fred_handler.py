@@ -126,8 +126,12 @@ class TestFredHandler(unittest.TestCase):
         self.assertTrue(self.visualizer.mahout.is_initialized())
 
     def test_mahout_operations_in_agent_based_modeling(self):
-        self.agent_based_modeling.simulate(steps=10)
-        self.assertTrue(True)  # Add appropriate assertions based on the expected behavior
+        def test_mahout_operations_in_agent_based_modeling(self):
+            initial_state = self.agent_based_modeling.get_state()
+            simulation_result = self.agent_based_modeling.simulate(steps=10)
+            self.assertNotEqual(initial_state, self.agent_based_modeling.get_state())
+            self.assertIsInstance(simulation_result, dict)
+            self.assertIn('final_state', simulation_result)
 
     def test_mahout_operations_in_random_seed_manager(self):
         random_bytes = self.random_seed_manager.random_bytes(length=10)
