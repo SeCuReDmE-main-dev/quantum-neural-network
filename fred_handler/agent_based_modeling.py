@@ -1,30 +1,32 @@
 import numpy as np
+from fred_handler.brain_structure import BrainStructure
 
 class AgentBasedModeling:
-    def __init__(self, agents, environment):
+    def __init__(self, agents, environment, brain_structure):
         self.agents = agents
         self.environment = environment
+        self.brain_structure = brain_structure
 
     def simulate(self, steps):
         for _ in range(steps):
             for agent in self.agents:
-                agent.act(self.environment)
-            self.environment.update()
+                agent.act(self.environment, self.brain_structure)
+            self.environment.update(self.brain_structure)
 
 class QuantumAgent:
     def __init__(self, state, strategy):
         self.state = state
         self.strategy = strategy
 
-    def act(self, environment):
-        self.state = self.strategy(self.state, environment)
+    def act(self, environment, brain_structure):
+        self.state = self.strategy(self.state, environment, brain_structure)
 
 class QuantumEnvironment:
     def __init__(self, initial_conditions):
         self.state = initial_conditions
 
-    def update(self):
-        # Update the environment state based on some rules
+    def update(self, brain_structure):
+        # Update the environment state based on some rules and brain structure
         pass
 
 class NeutrosophicLogic:
