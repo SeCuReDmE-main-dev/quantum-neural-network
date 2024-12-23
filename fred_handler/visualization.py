@@ -1,10 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.manifold import MDS
+from mahout import Mahout
 
 class QuantumDataVisualizer:
     def __init__(self, data):
         self.data = data
+        self.mahout = Mahout()
 
     def visualize_qubit_relationships(self):
         mds = MDS(n_components=2, dissimilarity='precomputed')

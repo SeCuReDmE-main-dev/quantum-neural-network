@@ -96,6 +96,32 @@ Leverages the collective behavior of decentralized, self-organized systems to op
    New-Website -Name $SiteName -PhysicalPath $SitePath -Port 8080 -Force
    ```
 
+3. **Create Web.config File**:
+   Create a new `Web.config` file in the IIS site directory, for example, `C:\inetpub\wwwroot\NeuralNetworkCore\Web.config`. Add the necessary configuration settings for Apache Ignite, Mahout, and Iceberg paths. Ensure the `Web.config` file contains the following settings:
+   ```xml
+   <configuration>
+       <appSettings>
+           <add key='ApacheIgnitePath' value='C:\Apache\Ignite'/>
+           <add key='ApacheMahoutPath' value='C:\Apache\Mahout'/>
+           <add key='ApacheIcebergPath' value='C:\Apache\Iceberg'/>
+       </appSettings>
+       <connectionStrings>
+           <add name='CerebellumTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Cerebellum.accdb;' />
+           <add name='CerebrumTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Cerebrum.accdb;' />
+           <add name='CreateBrainTables' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\create_brain_tables.sql;' />
+           <add name='HippocampusTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Hippocampus.accdb;' />
+           <add name='LimbicSystemTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Limbic System.accdb;' />
+           <add name='NeuralNetworkTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Neural_network.accdb;' />
+           <add name='OccipitalLobeTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Occipital Lobe.accdb;' />
+           <add name='PrefrontalCortexTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Prefrontal Cortex.accdb;' />
+           <add name='ThalamusTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\thalamus_table.sql;' />
+       </connectionStrings>
+   </configuration>
+   ```
+
+4. **Restart IIS Service**:
+   Save the `Web.config` file and restart the IIS service to apply the changes.
+
 ## Apache Ignite Configuration
 
 1. **Download and Configure Apache Ignite**:

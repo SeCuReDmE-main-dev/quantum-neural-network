@@ -1,9 +1,11 @@
 import numpy as np
+from mahout import Mahout
 
 class AgentBasedModeling:
     def __init__(self, agents, environment):
         self.agents = agents
         self.environment = environment
+        self.mahout = Mahout()
 
     def simulate(self, steps):
         for _ in range(steps):

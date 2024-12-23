@@ -1,8 +1,10 @@
 import numpy as np
+from mahout import Mahout
 
 class EigenvalueAnalysis:
     def __init__(self, matrix):
         self.matrix = matrix
+        self.mahout = Mahout()
 
     def compute_eigenvalues(self):
         eigenvalues, _ = np.linalg.eig(self.matrix)
