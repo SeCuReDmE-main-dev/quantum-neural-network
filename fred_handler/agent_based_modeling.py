@@ -2,10 +2,12 @@ import numpy as np
 from mahout import Mahout
 
 class AgentBasedModeling:
-    def __init__(self, agents, environment):
+    def __init__(self, agents, environment, mahout_instance=None):
         self.agents = agents
         self.environment = environment
-        self.mahout = Mahout()
+        self.mahout = mahout_instance or Mahout()
+        if not self.mahout.is_initialized():
+            raise RuntimeError("Mahout instance not properly initialized")
 
     def simulate(self, steps):
         for _ in range(steps):
