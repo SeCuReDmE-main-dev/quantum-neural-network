@@ -84,8 +84,8 @@ class TestFredHandler(unittest.TestCase):
         deserialized_key = self.fred_handler.deserialize_key(serialized_key)
         self.assertIsNotNone(deserialized_key)
 
-        neutrosophic_result = self.fred_handler.apply_neutrosophic_logic(np.random.rand(10), 0.7, 0.2, 0.1)
-        self.assertEqual(neutrosophic_result.shape, (10,))
+        with self.assertRaises(ValueError):
+            self.fred_handler.apply_neutrosophic_logic(np.random.rand(10), -0.7, 0.2, 0.1)
 
         filtered_data = self.fred_handler.filter_data(np.random.rand(10), 0.7, 0.2, 0.1)
         self.assertEqual(filtered_data.shape, (10,))
