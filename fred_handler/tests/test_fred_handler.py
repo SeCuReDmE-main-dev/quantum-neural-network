@@ -73,8 +73,11 @@ class TestFredHandler(unittest.TestCase):
         random_seed = self.fred_handler.generate_random_seed()
         self.assertIsInstance(random_seed, int)
 
-        key = pqc_algorithm.generate_private_key()
-        serialized_key = self.fred_handler.serialize_key(key.public_key())
+        try:
+            key = pqc_algorithm.generate_private_key()
+            serialized_key = self.fred_handler.serialize_key(key.public_key())
+        except Exception as e:
+            self.fail(f"Key generation or serialization failed: {e}")
         self.assertIsInstance(serialized_key, bytes)
 
         deserialized_key = self.fred_handler.deserialize_key(serialized_key)
