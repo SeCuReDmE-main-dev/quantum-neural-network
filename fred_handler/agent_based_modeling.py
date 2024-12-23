@@ -7,7 +7,10 @@ class AgentBasedModeling:
         self.agents = agents
         self.environment = environment
         self.brain_structure = brain_structure
-        self.qc_designer = QuantumCircuitDesigner()
+        try:
+            self.qc_designer = QuantumCircuitDesigner()
+        except ImportError as e:
+            raise ImportError("Failed to initialize QuantumCircuitDesigner. Please ensure the quantum-circuit-designer package is properly installed.") from e
 
     def simulate(self, steps):
         for _ in range(steps):
