@@ -60,6 +60,7 @@ class TestFredHandler(unittest.TestCase):
 
         transformed_data = self.fred_handler.visualize_data()
         self.assertEqual(transformed_data.shape, (10, 2))
+        self.assertTrue(np.all(transformed_data >= 0), "Transformed data should have non-negative values")
 
         eigenvalues = self.fred_handler.perform_eigenvalue_analysis(np.random.rand(5, 5))
         self.assertEqual(eigenvalues.shape, (5,))
