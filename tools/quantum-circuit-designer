@@ -1,0 +1,98 @@
+# Quantum Circuit Designer Tool
+
+This directory contains the Quantum Circuit Designer Tool, which is integrated into the project.
+
+## Overview
+
+The Quantum Circuit Designer Tool is a powerful tool for designing and simulating quantum circuits. It provides a user-friendly interface for creating quantum circuits, visualizing their behavior, and running simulations.
+
+## Features
+
+- **Quantum Circuit Design**: Create and design quantum circuits using a drag-and-drop interface.
+- **Simulation**: Run simulations of quantum circuits to analyze their behavior and performance.
+- **Visualization**: Visualize the quantum circuits and their states using various visualization techniques.
+- **Integration**: Easily integrate the quantum circuit designer tool into existing projects and workflows.
+
+## Installation
+
+To install the Quantum Circuit Designer Tool, follow these steps:
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Celebrum/quantum-circuit-designer.git
+   cd quantum-circuit-designer
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the tool**:
+   ```bash
+   python main.py
+   ```
+
+## Usage
+
+To use the Quantum Circuit Designer Tool, follow these steps:
+
+1. **Open the tool**:
+   ```bash
+   python main.py
+   ```
+
+2. **Create a new quantum circuit**:
+   - Use the drag-and-drop interface to add quantum gates and connect them to create a quantum circuit.
+
+3. **Simulate the quantum circuit**:
+   - Click on the "Simulate" button to run a simulation of the quantum circuit and analyze its behavior.
+
+4. **Visualize the quantum circuit**:
+   - Use the visualization tools to visualize the quantum circuit and its states.
+
+## Integration
+
+To integrate the Quantum Circuit Designer Tool into your project, follow these steps:
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Celebrum/quantum-circuit-designer.git
+   cd quantum-circuit-designer
+   ```
+
+2. **Place the tool in the project**:
+   Move the cloned repository to the `tools` directory:
+   ```bash
+   mv quantum-circuit-designer ../tools/
+   ```
+
+3. **Add dependencies**:
+   Update the `build.gradle` file with the necessary dependencies:
+   ```gradle
+   dependencies {
+       implementation 'com.quantum.circuit:quantum-circuit-designer:1.0.0'
+       implementation 'org.qiskit:qiskit-core:0.23.0'
+       implementation 'org.qiskit:qiskit-aer:0.8.0'
+       implementation 'org.qiskit:qiskit-ibmq-provider:0.12.0'
+       implementation 'org.jfree:jfreechart:1.5.3'
+       implementation 'org.jfree:jcommon:1.0.24'
+       implementation 'org.apache.commons:commons-math3:3.6.1'
+       implementation 'org.ejml:ejml-all:0.38'
+       testImplementation 'junit:junit:4.13.2'
+       testImplementation 'org.mockito:mockito-core:3.9.0'
+   }
+   ```
+
+4. **Integrate the tool**:
+   Modify the relevant files in the `fred_handler` and `neural_network` directories to utilize the quantum circuit designer tool.
+
+5. **Update the README**:
+   Add instructions on how to use the integrated quantum circuit designer tool in the `README.md` file.
+
+6. **Test the integration**:
+   Ensure that the integration works correctly by running the existing tests and adding new tests if necessary.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

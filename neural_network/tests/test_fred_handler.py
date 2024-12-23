@@ -5,6 +5,7 @@ from neural_network.visualization import QuantumDataVisualizer
 from neural_network.eigenvalue_analysis import EigenvalueAnalysis
 from neural_network.agent_based_modeling import AgentBasedModeling, QuantumAgent, QuantumEnvironment, NeutrosophicLogic, QuantumDataFiltration
 from neural_network.random_seed_manager import RandomSeedManager
+from tools.quantum_circuit_designer import QuantumCircuitDesigner
 
 class TestFredHandler(unittest.TestCase):
 
@@ -67,6 +68,12 @@ class TestFredHandler(unittest.TestCase):
     def test_random_seed_manager_functionality(self):
         # Add tests for RandomSeedManager functionality
         pass
+
+    def test_quantum_circuit_designer_integration(self):
+        # Add tests for integration of quantum circuit designer tool
+        self.assertIsNotNone(self.agent_based_modeling.qc_designer)
+        self.assertTrue(hasattr(self.agent_based_modeling.qc_designer, 'design_circuit'))
+        self.assertTrue(hasattr(self.agent_based_modeling.qc_designer, 'simulate_circuit'))
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,9 +1,16 @@
 import numpy as np
+from tools.quantum_circuit_designer import QuantumCircuitDesigner
 
 class AgentBasedModeling:
-    def __init__(self, agents, environment):
-        self.agents = agents
-        self.environment = environment
+    class AgentBasedModeling:
+        def __init__(self, agents, environment):
+            self.agents = agents
+            self.environment = environment
+            self.qc_designer = QuantumCircuitDesigner()
+        
+        def __del__(self):
+            if hasattr(self, 'qc_designer'):
+                self.qc_designer.cleanup()  # Assuming cleanup method exists
 
     def simulate(self, steps):
         for _ in range(steps):

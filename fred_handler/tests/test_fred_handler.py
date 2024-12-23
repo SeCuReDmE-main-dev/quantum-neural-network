@@ -96,5 +96,13 @@ class TestFredHandler(unittest.TestCase):
         self.environment.update(self.brain_structure)
         self.assertTrue(True)  # Add appropriate assertions based on the expected behavior
 
+    def test_quantum_circuit_designer_integration(self):
+        # Test quantum circuit designer integration
+        test_circuit = self.agent_based_modeling.qc_designer.design_circuit()
+        simulation_result = self.agent_based_modeling.qc_designer.simulate_circuit(test_circuit)
+        self.assertIsNotNone(simulation_result)
+        self.assertIsInstance(simulation_result, dict)  # or expected return type
+        self.assertIn('state_vector', simulation_result)  # verify expected output format
+
 if __name__ == '__main__':
     unittest.main()

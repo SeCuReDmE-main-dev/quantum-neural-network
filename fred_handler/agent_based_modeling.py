@@ -1,11 +1,16 @@
 import numpy as np
 from fred_handler.brain_structure import BrainStructure
+from tools.quantum_circuit_designer import QuantumCircuitDesigner
 
 class AgentBasedModeling:
     def __init__(self, agents, environment, brain_structure):
         self.agents = agents
         self.environment = environment
         self.brain_structure = brain_structure
+        try:
+            self.qc_designer = QuantumCircuitDesigner()
+        except ImportError as e:
+            raise ImportError("Failed to initialize QuantumCircuitDesigner. Please ensure the quantum-circuit-designer package is properly installed.") from e
 
     def simulate(self, steps):
         for _ in range(steps):
