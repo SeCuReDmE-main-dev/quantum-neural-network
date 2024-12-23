@@ -83,6 +83,11 @@ Integrates a brain structure model into the neural network, enhancing decision-m
     python neural_network/ffed_framework.py
     ```
 
+11. **Install Mahout and torchquantum dependencies**:
+    ```bash
+    pip install numpy matplotlib scikit-learn cryptography torch torchquantum
+    ```
+
 ## IIS Integration
 
 1. **Install IIS and Enable Necessary Features**:
@@ -248,6 +253,11 @@ Integrates a brain structure model into the neural network, enhancing decision-m
 To run the tests, use the following command:
 ```bash
 python -m unittest discover -s neural_network/tests
+```
+
+To run tests for Mahout and torchquantum integration, use the following command:
+```bash
+python -m unittest discover -s fred_handler/tests
 ```
 
 ## Contributing
