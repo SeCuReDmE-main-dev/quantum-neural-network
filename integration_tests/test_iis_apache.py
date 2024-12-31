@@ -59,5 +59,9 @@ class TestIISApacheIntegration(unittest.TestCase):
             self.assertIn('PrefrontalCortexTable', content)
             self.assertIn('ThalamusTable', content)
 
+    def test_mindsdb_postgresql_connection(self):
+        result = subprocess.run(['python', 'neural_network/mindsdb_postgresql_connection.py'], capture_output=True, text=True)
+        self.assertIn('Connection successful', result.stdout)
+
 if __name__ == '__main__':
     unittest.main()
