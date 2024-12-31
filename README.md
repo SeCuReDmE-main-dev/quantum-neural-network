@@ -280,3 +280,89 @@ Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTIN
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## JDK Installation
+
+1. **Download the JDK**:
+   Download the JDK from the official Oracle website or OpenJDK website.
+
+2. **Run the installer**:
+   Run the installer and follow the on-screen instructions to complete the installation.
+
+3. **Set the `JAVA_HOME` environment variable**:
+   Set the `JAVA_HOME` environment variable to the JDK installation directory.
+
+4. **Add the JDK `bin` directory to the `PATH` environment variable**:
+   Add the JDK `bin` directory to the `PATH` environment variable.
+
+## Gradle Installation
+
+1. **Download Gradle**:
+   Download the latest version of Gradle from the official Gradle website.
+
+2. **Extract the ZIP file**:
+   Extract the downloaded ZIP file to a directory of your choice.
+
+3. **Set the `GRADLE_HOME` environment variable**:
+   Set the `GRADLE_HOME` environment variable to the directory where you extracted Gradle.
+
+4. **Add the `GRADLE_HOME/bin` directory to the `PATH` environment variable**:
+   Add the `GRADLE_HOME/bin` directory to the `PATH` environment variable.
+
+5. **Verify the installation**:
+   Verify the installation by running `gradle -v` in your terminal. This should display the Gradle version and other relevant information.
+
+## Verifying Apache Mahout Installation
+
+1. **Check the Mahout installation directory**:
+   Ensure that the Mahout installation directory exists. For example, check if the directory `C:\Apache\Mahout` exists.
+
+2. **Verify the Mahout executable file**:
+   Verify that the Mahout executable file is present in the installation directory. For example, check if the file `C:\Apache\Mahout\bin\mahout.bat` exists.
+
+3. **Run a simple Mahout command**:
+   Run a simple Mahout command to ensure it is working correctly. Open a command prompt and navigate to the Mahout installation directory. Run the following command:
+   ```bash
+   mahout version
+   ```
+   This should display the version of Mahout installed.
+
+4. **Run integration tests**:
+   Check the integration tests in the repository. The file `integration_tests/test_iis_apache.py` contains a test case `test_apache_mahout_configuration` that verifies the Mahout installation and configuration. Run the integration tests to ensure that Mahout is properly installed and configured. Use the following command:
+   ```bash
+   python -m unittest discover -s integration_tests
+   ```
+
+## Verifying Apache Iceberg Installation
+
+1. **Check the Iceberg installation directory**:
+   Ensure that the Iceberg installation directory exists. For example, check if the directory `C:\Apache\Iceberg` exists.
+
+2. **Verify the Iceberg executable file**:
+   Verify that the Iceberg executable file is present in the installation directory. For example, check if the file `C:\Apache\Iceberg\bin\iceberg.bat` exists.
+
+3. **Run a simple Iceberg command**:
+   Run a simple Iceberg command to ensure it is working correctly. Open a command prompt and navigate to the Iceberg installation directory. Run the following command:
+   ```bash
+   iceberg version
+   ```
+   This should display the version of Iceberg installed.
+
+4. **Run integration tests**:
+   Check the integration tests in the repository. The file `integration_tests/test_iis_apache.py` contains a test case `test_apache_iceberg_configuration` that verifies the Iceberg installation and configuration. Run the integration tests to ensure that Iceberg is properly installed and configured. Use the following command:
+   ```bash
+   python -m unittest discover -s integration_tests
+   ```
+
+## Setting up MindsDB
+
+1. **Install MindsDB and psycopg2 dependencies**:
+   ```bash
+   pip install mindsdb psycopg2
+   ```
+
+2. **Configure MindsDB to connect to PostgreSQL**:
+   Ensure you have MindsDB installed and running. Install PostgreSQL and ensure it is running. Create a new PostgreSQL database and user with the necessary permissions. Configure MindsDB to connect to the PostgreSQL database by adding the connection details to the MindsDB configuration file.
+
+3. **Verify the connection**:
+   Ensure that MindsDB is running and properly configured to connect to the PostgreSQL database. Check the MindsDB logs for any connection-related messages or errors. Use a PostgreSQL client (e.g., `psql`, pgAdmin) to connect to the PostgreSQL database and verify that the database is accessible and the user has the necessary permissions. Execute a simple query through MindsDB to test the connection.

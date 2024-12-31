@@ -53,6 +53,15 @@ Set-Content -Path "$SitePath\Web.config" -Value "
         <add key='DatabaseCenterPath' value='C:\Users\Owner\Desktop\database center'/>
     </appSettings>
     <connectionStrings>
+        <add name='CerebellumTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Cerebellum.accdb;' />
+        <add name='CerebrumTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Cerebrum.accdb;' />
+        <add name='CreateBrainTables' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\create_brain_tables.sql;' />
+        <add name='HippocampusTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Hippocampus.accdb;' />
+        <add name='LimbicSystemTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Limbic System.accdb;' />
+        <add name='NeuralNetworkTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Neural_network.accdb;' />
+        <add name='OccipitalLobeTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Occipital Lobe.accdb;' />
+        <add name='PrefrontalCortexTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Prefrontal Cortex.accdb;' />
+        <add name='ThalamusTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\thalamus_table.sql;' />
     </connectionStrings>
 </configuration>
 "

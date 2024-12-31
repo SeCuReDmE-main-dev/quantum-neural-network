@@ -17,3 +17,18 @@ def connect_to_postgresql():
     )
 
     return connection
+
+def connect_to_mindsdb():
+    server = 'localhost'
+    port = 47334
+    user = 'mindsdb_user'
+    password = 'mindsdb_password'
+
+    connection = mindsdb.connect(
+        host=server,
+        port=port,
+        user=user,
+        password=password
+    )
+
+    return connection
