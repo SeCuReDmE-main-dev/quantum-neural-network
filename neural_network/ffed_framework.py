@@ -8,6 +8,9 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 from cryptography.hazmat.primitives.asymmetric import kyber, dilithium
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
+import matplotlib.pyplot as plt
+import torchquantum as tq
+import random
 
 class FractalGeometry:
     def __init__(self, N, r):

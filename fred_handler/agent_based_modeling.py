@@ -1,7 +1,7 @@
 import numpy as np
 from mahout import Mahout
 
-ationclass AgentBasedModeling:
+class AgentBasedModeling:
     def __init__(self, agents, environment, mahout_instance=None):
         self.agents = agents
         self.environment = environment
