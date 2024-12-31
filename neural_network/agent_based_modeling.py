@@ -2,36 +2,47 @@ import numpy as np
 from tools.quantum_circuit_designer import QuantumCircuitDesigner
 
 class AgentBasedModeling:
-    class AgentBasedModeling:
-        def __init__(self, agents, environment):
-            self.agents = agents
-            self.environment = environment
-            self.qc_designer = QuantumCircuitDesigner()
-        
-        def __del__(self):
-            if hasattr(self, 'qc_designer'):
-                self.qc_designer.cleanup()  # Assuming cleanup method exists
+    def __init__(self, agents, environment):
+        self.agents = agents
+        self.environment = environment
+        self.qc_designer = QuantumCircuitDesigner()
+    
+    def __del__(self):
+        if hasattr(self, 'qc_designer'):
+            self.qc_designer.cleanup()  # Assuming cleanup method exists
 
     def simulate(self, steps):
         for _ in range(steps):
             for agent in self.agents:
-                agent.act(self.environment)
-            self.environment.update()
+                agent.act(self.environment, self.agents)
+            self.environment.update(self.agents)
 
 class QuantumAgent:
     def __init__(self, state, strategy):
         self.state = state
         self.strategy = strategy
 
-    def act(self, environment):
-        self.state = self.strategy(self.state, environment)
+    def act(self, environment, agents):
+        self.state = self.strategy(self.state, environment, agents)
+
+    def communicate(self, other_agent):
+        # Example communication method
+        pass
+
+    def cooperate(self, other_agent):
+        # Example cooperation method
+        pass
+
+    def compete(self, other_agent):
+        # Example competition method
+        pass
 
 class QuantumEnvironment:
     def __init__(self, initial_conditions):
         self.state = initial_conditions
 
-    def update(self):
-        # Update the environment state based on some rules
+    def update(self, agents):
+        # Update the environment state based on some rules and agent interactions
         pass
 
 class NeutrosophicLogic:
