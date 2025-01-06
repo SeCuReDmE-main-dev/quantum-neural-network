@@ -34,9 +34,9 @@ Integrates a brain structure model into the neural network, enhancing decision-m
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/githubnext/workspace-blank.git
-   cd workspace-blank
-   ```
+   git clone
+   cd
+   
 
 2. **Install dependencies**:
    ```bash
