@@ -1,12 +1,159 @@
-# Step 1: Install IIS and Enable Necessary Features
-Write-Output "Installing IIS and enabling necessary features..."
-Install-WindowsFeature -Name Web-Server, Web-Mgmt-Tools, Web-Scripting-Tools, Web-Asp-Net45
+# Elevate to admin if not already
+if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {    
+    $arguments = "& '" + $myinvocation.mycommand.definition + "'"
+    Start-Process powershell -Verb runAs -ArgumentList $arguments
+    Break
+}
 
-# Configure IIS Site
-$SiteName = "NeuralNetworkCore"
-$SitePath = "C:\inetpub\wwwroot\$SiteName"
-New-Item -ItemType Directory -Path $SitePath -Force
-New-Website -Name $SiteName -PhysicalPath $SitePath -Port 8080 -Force
+# Step 1: Install IIS and Required Features
+Write-Output "Installing IIS and required features..."
+$features = @(
+    "Web-Server",
+    "Web-WebServer",
+    "Web-Common-Http",
+    "Web-Default-Doc",
+    "Web-Dir-Browsing",
+    "Web-Http-Errors",
+    "Web-Static-Content",
+    "Web-Http-Redirect",
+    "Web-Health",
+    "Web-Http-Logging",
+    "Web-Custom-Logging",
+    "Web-Log-Libraries",
+    "Web-Request-Monitor",
+    "Web-Http-Tracing",
+    "Web-Performance",
+    "Web-Stat-Compression",
+    "Web-Dyn-Compression",
+    "Web-Security",
+    "Web-Filtering",
+    "Web-Basic-Auth",
+    "Web-Windows-Auth",
+    "Web-App-Dev",
+    "Web-Net-Ext45",
+    "Web-AppInit",
+    "Web-Mgmt-Tools",
+    "Web-Scripting-Tools"
+)
+
+foreach ($feature in $features) {
+    try {
+        Install-WindowsFeature -Name $feature -ErrorAction Stop
+        Write-Output "Installed feature: $feature"
+    } catch {
+        Write-Warning "Failed to install feature: $feature"
+        Write-Warning $_.Exception.Message
+    }
+}
+
+# Step 2: Configure IIS Ports and Bindings
+Write-Output "Configuring IIS ports..."
+
+# Define ports for different components
+$ports = @{
+    "NeuralNetworkCore" = 8080
+    "QuantumTensor" = 8081
+    "MindsDBBridge" = 8082
+    "PersonaManager" = 8083
+}
+
+# Create and configure sites
+foreach ($site in $ports.GetEnumerator()) {
+    $siteName = $site.Key
+    $port = $site.Value
+    $sitePath = "C:\inetpub\wwwroot\$siteName"
+    
+    # Create site directory
+    New-Item -ItemType Directory -Path $sitePath -Force
+    
+    # Create web.config for each site
+    $webConfig = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <handlers>
+            <remove name="WebDAV" />
+            <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+            <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="*" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+        </handlers>
+        <security>
+            <requestFiltering>
+                <requestLimits maxAllowedContentLength="30000000" />
+            </requestFiltering>
+        </security>
+        <httpProtocol>
+            <customHeaders>
+                <add name="Access-Control-Allow-Origin" value="*" />
+                <add name="Access-Control-Allow-Headers" value="Content-Type" />
+                <add name="Access-Control-Allow-Methods" value="GET, POST, PUT, DELETE, OPTIONS" />
+            </customHeaders>
+        </httpProtocol>
+    </system.webServer>
+</configuration>
+"@
+    Set-Content -Path "$sitePath\web.config" -Value $webConfig
+
+    # Create or update website
+    if (Get-Website -Name $siteName) {
+        Remove-Website -Name $siteName
+    }
+    New-Website -Name $siteName -PhysicalPath $sitePath -Port $port -Force
+    
+    # Open port in Windows Firewall
+    $ruleName = "IIS $siteName Port $port"
+    if (Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue) {
+        Remove-NetFirewallRule -DisplayName $ruleName
+    }
+    New-NetFirewallRule -DisplayName $ruleName -Direction Inbound -Protocol TCP -LocalPort $port -Action Allow
+}
+
+# Step 3: Configure Application Pools
+Write-Output "Configuring application pools..."
+foreach ($site in $ports.Keys) {
+    $poolName = "$site" + "Pool"
+    if (Test-Path "IIS:\AppPools\$poolName") {
+        Remove-WebAppPool -Name $poolName
+    }
+    
+    $pool = New-WebAppPool -Name $poolName
+    Set-ItemProperty -Path "IIS:\AppPools\$poolName" -Name "managedRuntimeVersion" -Value "v4.0"
+    Set-ItemProperty -Path "IIS:\AppPools\$poolName" -Name "startMode" -Value "AlwaysRunning"
+    Set-ItemProperty -Path "IIS:\AppPools\$poolName" -Name "processModel.idleTimeout" -Value ([TimeSpan]::FromMinutes(0))
+    
+    Set-ItemProperty -Path "IIS:\Sites\$site" -Name "applicationPool" -Value $poolName
+}
+
+# Step 4: Configure URL Rewrite Rules for API Gateway
+Write-Output "Configuring URL rewrite rules..."
+try {
+    # Check if URL Rewrite Module is installed
+    if (-not (Test-Path "$env:ProgramFiles\IIS\Application Request Routing")) {
+        Write-Output "Downloading and installing URL Rewrite Module..."
+        $urlRewriteInstaller = "$env:TEMP\urlrewrite.msi"
+        Invoke-WebRequest -Uri "https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi" -OutFile $urlRewriteInstaller
+        Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$urlRewriteInstaller`" /quiet /norestart" -Wait
+    }
+} catch {
+    Write-Warning "Failed to install URL Rewrite Module. Some functionality may be limited."
+    Write-Warning $_.Exception.Message
+}
+
+# Step 5: Health Check
+Write-Output "Performing health check..."
+foreach ($site in $ports.GetEnumerator()) {
+    $siteName = $site.Key
+    $port = $site.Value
+    
+    try {
+        $response = Invoke-WebRequest -Uri "http://localhost:$port" -UseBasicParsing -ErrorAction Stop
+        Write-Output "$siteName is running on port $port. Status: $($response.StatusCode)"
+    } catch {
+        Write-Warning "$siteName health check failed on port $port"
+        Write-Warning $_.Exception.Message
+    }
+}
+
+Write-Output "IIS setup complete. Please check the above output for any warnings or errors."
 
 # Step 2: Download and Configure Apache Ignite
 Write-Output "Downloading and configuring Apache Ignite..."
@@ -44,7 +191,7 @@ Expand-Archive -Path "$IcebergPath\apache-iceberg.zip" -DestinationPath $Iceberg
 # Step 5: Integrate Components with IIS
 Write-Output "Configuring integration between IIS, Ignite, Mahout, and Iceberg..."
 # Example configuration for linking Ignite and Mahout
-Set-Content -Path "$SitePath\Web.config" -Value "
+Set-Content -Path "$sitePath\Web.config" -Value "
 <configuration>
     <appSettings>
         <add key='ApacheIgnitePath' value='$IgnitePath'/>
