@@ -5,20 +5,18 @@ from dataclasses import dataclass
 from .phi_framework import PhiFramework, PhiConfig
 from .eigenvalue_analysis import EigenvalueAnalysis
 from .quantum_tensor_networks import TensorNetwork, QuantumState
+from .neural_forecast import NeuralForecast, NeuralForecastConfig
+from .h2o_quantum_connector import H2OQuantumConnector
+from .quantum_memory_manager import QuantumMemoryManager
 
 @dataclass
 class TensorZeroConfig:
-    """Configuration for TensorZero flywheel"""
-    batch_size: int = 32
+    """Configuration for TensorZero neural bridge"""
+    hidden_layers: List[int] = None
     learning_rate: float = 0.001
-    momentum: float = 0.9
-    weight_decay: float = 1e-4
-    num_workers: int = 4
-    pin_memory: bool = True
-    phi_scaling: bool = True
-    enable_quantization: bool = True
-    enable_mixed_precision: bool = True
-    enable_gradient_checkpointing: bool = True
+    iteration_batch_size: int = 32
+    memory_size: int = 1000
+    enable_quantum_features: bool = True
 
 @dataclass
 class PersonaConfig:
@@ -112,182 +110,212 @@ class PersonaSwitchManager:
         raise ValueError(f"No suitable persona found for age {age}")
 
 class TensorZeroFlywheel:
-    """TensorZero flywheel implementation with quantum neural integration and persona management"""
+    """Neural bridge with auto-iteration capabilities"""
     
-    def __init__(self, 
-                 config: TensorZeroConfig,
-                 phi_config: Optional[PhiConfig] = None):
-        self.config = config
-        self.phi_framework = PhiFramework(phi_config or PhiConfig())
-        self.analyzer = EigenvalueAnalysis(phi_config)
-        self.tensor_network = TensorNetwork(
-            n_qubits=4,
-            bond_dimension=8,
-            phi=self.phi_framework.phi
+    def __init__(self, config: Optional[TensorZeroConfig] = None):
+        self.config = config or TensorZeroConfig(
+            hidden_layers=[256, 128, 64]
+        )
+        
+        # Initialize neural components
+        self._initialize_networks()
+        self.optimizer = torch.optim.Adam(
+            self.networks['main'].parameters(),
+            lr=self.config.learning_rate
         )
         
         # Initialize quantum tensors
-        self.quantum_tensors: Dict[str, QuantumState] = {}
+        self.quantum_tensors = {}
         
-        # Setup mixed precision
-        if self.config.enable_mixed_precision:
-            self.scaler = torch.cuda.amp.GradScaler()
+        # Track iteration state
+        self.iteration_count = 0
+        self.iteration_history = []
         
-        # Initialize persona management
-        self.persona_manager = PersonaSwitchManager(self.phi_framework)
-    
-    def apply_persona_scaling(self, tensor: torch.Tensor) -> torch.Tensor:
-        """Apply persona-specific scaling to tensor"""
-        current_config = self.persona_manager.get_current_config()
-        if not current_config:
-            return tensor
+    def _initialize_networks(self):
+        """Initialize neural networks"""
+        self.networks = {
+            'main': torch.nn.Sequential(
+                *self._create_layers(self.config.hidden_layers)
+            ),
+            'forecast': NeuralForecast(NeuralForecastConfig(
+                input_size=self.config.hidden_layers[0],
+                hidden_size=self.config.hidden_layers[1],
+                forecast_horizon=10
+            ))
+        }
+        
+    def _create_layers(self, sizes: List[int]) -> List[torch.nn.Module]:
+        """Create network layers"""
+        layers = []
+        for i in range(len(sizes)-1):
+            layers.extend([
+                torch.nn.Linear(sizes[i], sizes[i+1]),
+                torch.nn.ReLU(),
+                torch.nn.BatchNorm1d(sizes[i+1])
+            ])
+        return layers
+        
+    def create_quantum_tensor(self,
+                            name: str,
+                            shape: Tuple[int, int],
+                            initial_state: Optional[np.ndarray] = None) -> torch.Tensor:
+        """Create quantum tensor for neural bridge"""
+        if initial_state is not None:
+            tensor = torch.tensor(initial_state, dtype=torch.float32)
+        else:
+            tensor = torch.randn(*shape, dtype=torch.float32)
             
-        # Apply persona-specific scaling factors
-        scaling = (
-            current_config.emotional_support_level * 
-            current_config.language_complexity * 
-            current_config.stem_focus
-        )
-        return tensor * (scaling * self.phi_framework.phi)
-    
-    def create_quantum_tensor(self, 
-                            name: str, 
-                            shape: Tuple[int, ...],
-                            requires_grad: bool = True) -> torch.Tensor:
-        """Create a quantum tensor with persona-aware ϕ-scaling"""
-        # Initialize with quantum state
-        state = self.tensor_network.random_state()
-        vector = self.tensor_network.contract_state(state)
-        
-        # Reshape to desired dimensions
-        tensor = torch.from_numpy(vector).reshape(shape)
-        if requires_grad:
-            tensor.requires_grad_()
-        
-        # Apply ϕ-scaling if enabled
-        if self.config.phi_scaling:
-            tensor *= self.phi_framework.phi
-        
-        # Apply persona-specific scaling
-        tensor = self.apply_persona_scaling(tensor)
-        
-        # Store quantum state for later use
-        self.quantum_tensors[name] = state
-        
+        self.quantum_tensors[name] = tensor
         return tensor
-    
-    def forward_quantum(self, 
+        
+    def forward_quantum(self,
                        input_tensor: torch.Tensor,
-                       quantum_state: QuantumState) -> torch.Tensor:
-        """Forward pass through quantum tensor network with persona awareness"""
-        with torch.cuda.amp.autocast(enabled=self.config.enable_mixed_precision):
-            # Contract quantum state with input
-            contracted = self.tensor_network.contract_with_input(
-                quantum_state, input_tensor.detach().cpu().numpy()
+                       quantum_tensor: torch.Tensor) -> torch.Tensor:
+        """Forward pass with quantum tensor integration"""
+        # Apply quantum tensor
+        quantum_weighted = input_tensor * quantum_tensor
+        
+        # Forward through network
+        output = self.networks['main'](quantum_weighted)
+        
+        return output
+        
+    async def iterate(self,
+                     input_data: Dict[str, Any],
+                     target: Optional[torch.Tensor] = None) -> Dict[str, Any]:
+        """Perform auto-iteration step"""
+        try:
+            # Convert input to tensor
+            input_tensor = self._prepare_input(input_data)
+            
+            # Get quantum tensors
+            quantum_tensors = {
+                name: tensor
+                for name, tensor in self.quantum_tensors.items()
+            }
+            
+            # Forward pass
+            outputs = {}
+            for name, tensor in quantum_tensors.items():
+                outputs[name] = self.forward_quantum(input_tensor, tensor)
+                
+            # Generate forecast
+            forecast_input = torch.cat([
+                output for output in outputs.values()
+            ], dim=-1)
+            forecast, forecast_metrics = self.networks['forecast'].forecast(
+                forecast_input
             )
             
-            # Analyze stability
-            analysis = self.analyzer.analyze_stability(contracted)
+            # Update if target provided
+            loss = None
+            if target is not None:
+                loss = self._update_step(outputs, target)
+                
+            # Track iteration
+            self.iteration_count += 1
+            self.iteration_history.append({
+                'iteration': self.iteration_count,
+                'loss': float(loss) if loss is not None else None,
+                'forecast_metrics': forecast_metrics
+            })
             
-            # Apply stability-based scaling
-            stability = analysis['stability_summary']['temporal_stability']
-            output = torch.from_numpy(contracted).to(input_tensor.device)
-            output *= stability
+            return {
+                'outputs': {
+                    name: output.detach().numpy()
+                    for name, output in outputs.items()
+                },
+                'forecast': forecast.detach().numpy(),
+                'forecast_metrics': forecast_metrics,
+                'loss': float(loss) if loss is not None else None,
+                'iteration': self.iteration_count
+            }
             
-            # Apply persona-specific scaling
-            output = self.apply_persona_scaling(output)
+        except Exception as e:
+            print(f"Error in iteration step: {e}")
+            raise
             
-            return output
-    
-    def quantum_gradient(self, 
-                        output: torch.Tensor,
-                        quantum_state: QuantumState) -> np.ndarray:
-        """Calculate quantum gradients using ϕ-framework"""
-        # Get quantum state gradient
-        grad = self.tensor_network.gradient(
-            quantum_state,
-            output.detach().cpu().numpy()
+    def _prepare_input(self, data: Dict[str, Any]) -> torch.Tensor:
+        """Prepare input data for neural processing"""
+        if isinstance(data, (np.ndarray, torch.Tensor)):
+            return torch.tensor(data, dtype=torch.float32)
+            
+        # Extract numerical values
+        values = []
+        for value in data.values():
+            if isinstance(value, (int, float)):
+                values.append(float(value))
+            elif isinstance(value, (list, np.ndarray)):
+                values.extend([float(x) for x in value])
+                
+        return torch.tensor(values, dtype=torch.float32)
+        
+    def _update_step(self,
+                    outputs: Dict[str, torch.Tensor],
+                    target: torch.Tensor) -> torch.Tensor:
+        """Perform update step with target"""
+        # Calculate loss
+        loss = sum(
+            torch.nn.functional.mse_loss(output, target)
+            for output in outputs.values()
         )
         
-        # Apply ϕ-scaling to gradient
-        if self.config.phi_scaling:
-            grad *= self.phi_framework.phi
+        # Backward pass
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
         
-        return grad
-    
-    def optimize_quantum_state(self,
-                             name: str,
-                             grad: np.ndarray,
-                             learning_rate: float) -> None:
-        """Optimize quantum state using gradient"""
+        return loss
+        
+    def update_quantum_state(self,
+                           name: str,
+                           new_state: np.ndarray,
+                           learning_rate: float = 0.1):
+        """Update quantum tensor state"""
         if name not in self.quantum_tensors:
-            raise KeyError(f"Quantum tensor {name} not found")
+            raise ValueError(f"Unknown quantum tensor: {name}")
             
-        state = self.quantum_tensors[name]
+        # Convert to tensor
+        new_state = torch.tensor(new_state, dtype=torch.float32)
         
-        # Apply gradient update with stability check
-        new_state = state.update_with_gradient(grad, learning_rate)
-        analysis = self.analyzer.analyze_stability(
-            self.tensor_network.contract_state(new_state)
-        )
+        # Update with learning rate
+        current = self.quantum_tensors[name]
+        updated = current + learning_rate * (new_state - current)
         
-        # Only update if stability is maintained
-        if analysis['stability_summary']['temporal_stability'] >= 0.5:
-            self.quantum_tensors[name] = new_state
-    
-    def quantize_tensor(self, tensor: torch.Tensor) -> torch.Tensor:
-        """Quantize tensor if enabled"""
-        if not self.config.enable_quantization:
-            return tensor
+        self.quantum_tensors[name] = updated
+        
+    def attach_mindsdb_forecast(self,
+                              forecast: NeuralForecast,
+                              name: str):
+        """Attach MindsDB forecast to neural bridge"""
+        self.networks['forecast'] = forecast
+        if name not in self.quantum_tensors:
+            self.create_quantum_tensor(
+                name,
+                shape=(forecast.config.input_size, forecast.config.hidden_size)
+            )
             
-        # Dynamic quantization
-        scale = tensor.abs().max() / 127.
-        quantized = (tensor / scale).round().clamp(-127, 127).to(torch.int8)
-        return quantized, scale
-    
-    def checkpoint_forward(self, 
-                         func: callable,
-                         *args,
-                         **kwargs) -> torch.Tensor:
-        """Apply gradient checkpointing if enabled"""
-        if self.config.enable_gradient_checkpointing:
-            return torch.utils.checkpoint.checkpoint(func, *args, **kwargs)
-        return func(*args, **kwargs)
-    
-    def attach_mindsdb_forecast(self, 
-                              forecast_model: 'MindsDBForecast',
-                              tensor_name: str) -> None:
-        """Attach MindsDB neural forecast to quantum tensor"""
-        if tensor_name not in self.quantum_tensors:
-            raise KeyError(f"Quantum tensor {tensor_name} not found")
-            
-        # Get quantum state predictions
-        state = self.quantum_tensors[tensor_name]
-        vector = self.tensor_network.contract_state(state)
-        
-        # Update forecast model with quantum state
-        forecast_model.update_with_quantum_state(vector)
-    
-    def update_from_forecast(self,
-                           forecast_model: 'MindsDBForecast',
-                           tensor_name: str) -> None:
-        """Update quantum tensor from MindsDB forecast"""
-        if tensor_name not in self.quantum_tensors:
-            raise KeyError(f"Quantum tensor {tensor_name} not found")
-            
-        # Get forecast predictions
-        predictions = forecast_model.get_predictions()
-        
-        # Convert to quantum state
-        new_state = self.tensor_network.state_from_vector(predictions)
-        
-        # Analyze stability before updating
-        analysis = self.analyzer.analyze_stability(
-            self.tensor_network.contract_state(new_state)
-        )
-        
-        if analysis['stability_summary']['temporal_stability'] >= 0.5:
-            self.quantum_tensors[tensor_name] = new_state
+    def get_quantum_metrics(self) -> Dict[str, Any]:
+        """Get metrics about quantum states"""
+        return {
+            'tensors': {
+                name: {
+                    'shape': tuple(tensor.shape),
+                    'mean': float(tensor.mean()),
+                    'std': float(tensor.std())
+                }
+                for name, tensor in self.quantum_tensors.items()
+            },
+            'iteration_count': self.iteration_count,
+            'iteration_history': self.iteration_history[-10:],  # Last 10 iterations
+            'network_status': {
+                name: {
+                    'parameters': sum(p.numel() for p in network.parameters()),
+                    'training': network.training
+                }
+                for name, network in self.networks.items()
+            }
+        }
 
 class GatewayManager:
     """Manages gateway connections between TensorZero and MindsDB"""
