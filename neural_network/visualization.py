@@ -1,41 +1,41 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.manifold import MDS
 from mpl_toolkits.mplot3d import Axes3D
+import seaborn as sns
+from typing import Dict, List, Tuple, Optional
+from .phi_framework import PhiFramework, PhiConfig
+from .agent_based_modeling import AgentBasedModeling
+from .brain_structure import BrainStructureAnalysis
 
 class QuantumDataVisualizer:
-    def __init__(self, data):
-        self.data = data
-
-    def visualize_qubit_relationships(self):
-        mds = MDS(n_components=2, dissimilarity='precomputed')
-        transformed_data = mds.fit_transform(self.data)
-        plt.scatter(transformed_data[:, 0], transformed_data[:, 1])
-        plt.title('Qubit Relationships')
-        plt.xlabel('Component 1')
-        plt.ylabel('Component 2')
-        plt.show()
-
-    def visualize_data_packet_flow(self):
-        mds = MDS(n_components=2, dissimilarity='precomputed')
-        transformed_data = mds.fit_transform(self.data)
-        plt.scatter(transformed_data[:, 0], transformed_data[:, 1])
-        plt.title('Data Packet Flow')
-        plt.xlabel('Component 1')
-        plt.ylabel('Component 2')
-        plt.show()
-
-    def visualize_quantum_state_similarity(self):
-        mds = MDS(n_components=2, dissimilarity='precomputed')
-        transformed_data = mds.fit_transform(self.data)
-        plt.scatter(transformed_data[:, 0], transformed_data[:, 1])
-        plt.title('Quantum State Similarity')
-        plt.xlabel('Component 1')
-        plt.ylabel('Component 2')
-        plt.show()
-
-    def visualize_3d_quantum_circuit(self, circuit_data):
-        fig = plt.figure()
+    def __init__(self, phi_config: Optional[PhiConfig] = None):
+        self.phi_framework = PhiFramework(phi_config or PhiConfig())
+        plt.style.use('dark_background')
+        
+    def visualize_quantum_state(self, quantum_state: np.ndarray, title: str = '') -> plt.Figure:
+        """Visualize quantum state with ϕ-based scaling"""
+        fig = plt.figure(figsize=(12, 8))
+        ax = fig.add_subplot(111)
+        
+        # Apply ϕ-scaling to visualization
+        scaled_state = np.abs(quantum_state) * self.phi_framework.phi
+        im = ax.imshow(scaled_state, cmap='viridis')
+        plt.colorbar(im, ax=ax, label='ϕ-scaled amplitude')
+        
+        ax.set_title(f'Quantum State: {title}')
+        ax.set_xlabel('State dimension')
+        ax.set_ylabel('State dimension')
+        return fig
+    
+    def plot_brain_waves(self, wave_pattern: np.ndarray, region: str) -> plt.Figure:
+        """Plot brain wave patterns with ϕ-based analysis"""
+        fig = plt.figure(figsize=(12, 6))
+        ax = fig.add_subplot(111)
+        
+        wave_types = ['Alpha', 'Beta', 'Theta', 'Delta', 'Gamma']
+        x = np.arange(len(wave_types))
+        
+        # Scale wave amplitudes by ϕ
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter(circuit_data[:, 0], circuit_data[:, 1], circuit_data[:, 2])
         ax.set_title('3D Quantum Circuit Visualization')
