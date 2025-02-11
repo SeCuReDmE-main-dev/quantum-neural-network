@@ -8,44 +8,77 @@ import random
 
 from torchquantum.datasets import MNIST
 from torch.optim.lr_scheduler import CosineAnnealingLR
+from typing import List, Optional
 
 class QuanvolutionFilter(tq.QuantumModule):
     def __init__(self):
         super().__init__()
         self.n_wires = 4
         self.q_device = tq.QuantumDevice(n_wires=self.n_wires)
-        self.encoder = tq.GeneralEncoder(
-        [   {'input_idx': [0], 'func': 'ry', 'wires': [0]},
-            {'input_idx': [1], 'func': 'ry', 'wires': [1]},
-            {'input_idx': [2], 'func': 'ry', 'wires': [2]},
-            {'input_idx': [3], 'func': 'ry', 'wires': [3]},])
-
-        self.q_layer = tq.RandomLayer(n_ops=8, wires=list(range(self.n_wires)))
+        self.golden_ratio = (1 + np.sqrt(5)) / 2
+        
+        # Enhanced encoder with Fibonacci scaling
+        self.encoder = tq.GeneralEncoder([
+            {'input_idx': [i], 'func': 'ry', 'wires': [i], 
+             'params': self.golden_ratio ** i} for i in range(self.n_wires)
+        ])
+        
+        # Quantum layer with neutrosophic gates
+        self.q_layer = tq.RandomLayer(
+            n_ops=8,
+            wires=list(range(self.n_wires)),
+            n_params=3  # truth, indeterminacy, falsity
+        )
+        
+        # Measurement in multiple bases for enhanced feature extraction
         self.measure = tq.MeasureAll(tq.PauliZ)
+        
+        # Initialize fractal pattern buffers
+        self.fractal_buffer = []
+        self.max_fractal_depth = 4
 
-    def forward(self, x, use_qiskit=False):
+    def generate_fractal_pattern(self, x: torch.Tensor, depth: int) -> torch.Tensor:
+        """Generate quantum fractal pattern using Fibonacci scaling"""
+        pattern = x
+        for i in range(depth):
+            scaled = pattern * (self.golden_ratio ** i)
+            pattern = torch.cat([pattern, scaled], dim=-1)
+        return pattern
+
+    def forward(self, x: torch.Tensor, use_qiskit: bool = False) -> torch.Tensor:
+        """Forward pass with FfeD sequence integration"""
         bsz = x.shape[0]
-        size = 28
-        x = x.view(bsz, size, size)
-
-        data_list = []
-
-        for c in range(0, size, 2):
-            for r in range(0, size, 2):
-                data = torch.transpose(torch.cat((x[:, c, r], x[:, c, r+1], x[:, c+1, r], x[:, c+1, r+1])).view(4, bsz), 0, 1)
-                if use_qiskit:
-                    data = self.qiskit_processor.process_parameterized(
-                        self.q_device, self.encoder, self.q_layer, self.measure, data)
-                else:
-                    self.encoder(self.q_device, data)
-                    self.q_layer(self.q_device)
-                    data = self.measure(self.q_device)
-
-                data_list.append(data.view(bsz, 4))
-
-        result = torch.cat(data_list, dim=1).float()
-
-        return result
+        
+        # Generate fractal patterns
+        fractal_x = self.generate_fractal_pattern(x, self.max_fractal_depth)
+        
+        # Store in buffer for recurrent processing
+        self.fractal_buffer.append(fractal_x)
+        if len(self.fractal_buffer) > 10:
+            self.fractal_buffer.pop(0)
+        
+        # Process quantum data
+        if use_qiskit:
+            data = self.qiskit_processor.process_parameterized(
+                self.q_device, self.encoder, self.q_layer, self.measure, fractal_x)
+        else:
+            self.encoder(self.q_device, fractal_x)
+            self.q_layer(self.q_device)
+            data = self.measure(self.q_device)
+        
+        # Apply neutrosophic scaling
+        truth = F.sigmoid(data)
+        indeterminacy = 1 - torch.abs(2 * truth - 1)  # Uncertainty measure
+        falsity = 1 - truth
+        
+        # Combine components with Fibonacci weights
+        quantum_features = (
+            truth * self.golden_ratio + 
+            indeterminacy + 
+            falsity / self.golden_ratio
+        )
+        
+        return quantum_features
 
 class HybridModel(torch.nn.Module):
     def __init__(self):
