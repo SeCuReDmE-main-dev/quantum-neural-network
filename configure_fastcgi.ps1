@@ -113,6 +113,87 @@ if ($rewriteModule) {
     }
 }
 
+# Configure FastCGI settings for brain parts
+Write-Host "Configuring FastCGI settings..." -ForegroundColor Cyan
+
+# Import required module
+Import-Module WebAdministration
+
+$brainParts = @(
+    # Level 1: Core Processing
+    @{
+        Name = "Cerebrum"
+        IP = "10.0.0.163" 
+        Port = 8090
+        ProcessModel = @{
+            MaxInstances = 4
+            IdleTimeout = 1800
+        }
+    },
+    @{
+        Name = "Brainstem"
+        IP = "10.0.0.164"
+        Port = 8091
+        ProcessModel = @{
+            MaxInstances = 2
+            IdleTimeout = 1800
+        }
+    },
+    @{
+        Name = "Cerebellum"
+        IP = "10.0.0.165"
+        Port = 8092
+        ProcessModel = @{
+            MaxInstances = 4
+            IdleTimeout = 1800
+        }
+    }
+    # Add other brain parts here...
+)
+
+foreach ($part in $brainParts) {
+    $webConfigPath = "C:\inetpub\wwwroot\$($part.Name)\web.config"
+    
+    $webConfigContent = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <handlers>
+            <add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" 
+                 scriptProcessor="C:\Python\python.exe|C:\Python\Lib\site-packages\wfastcgi.py" 
+                 resourceType="Unspecified" />
+        </handlers>
+        <fastCgi>
+            <application fullPath="C:\Python\python.exe" 
+                        arguments="C:\Python\Lib\site-packages\wfastcgi.py"
+                        maxInstances="$($part.ProcessModel.MaxInstances)"
+                        idleTimeout="$($part.ProcessModel.IdleTimeout)">
+                <environmentVariables>
+                    <environmentVariable name="PYTHONPATH" value="C:\inetpub\wwwroot\$($part.Name)" />
+                    <environmentVariable name="WSGI_HANDLER" value="app.app" />
+                    <environmentVariable name="BRAIN_PART" value="$($part.Name)" />
+                    <environmentVariable name="QUANTUM_BRIDGE_ENABLED" value="true" />
+                    <environmentVariable name="PHI_FRAMEWORK_ENABLED" value="true" />
+                    <environmentVariable name="PORT" value="$($part.Port)" />
+                    <environmentVariable name="IP" value="$($part.IP)" />
+                </environmentVariables>
+            </application>
+        </fastCgi>
+        <security>
+            <requestFiltering>
+                <requestLimits maxAllowedContentLength="30000000" />
+            </requestFiltering>
+        </security>
+    </system.webServer>
+</configuration>
+"@
+
+    Set-Content -Path $webConfigPath -Value $webConfigContent
+    Write-Host "Configured FastCGI for $($part.Name)" -ForegroundColor Green
+}
+
+Write-Host "`nFastCGI configuration complete!" -ForegroundColor Green
+
 Write-Host "Configuration complete. Please verify the following:" -ForegroundColor Green
 Write-Host "1. IIS Service is running"
 Write-Host "2. FastCGI handler is configured"
