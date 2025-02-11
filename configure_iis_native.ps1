@@ -33,6 +33,126 @@ try {
             Name = "BasalGangliaPool"
             RuntimeVersion = "v4.0"
             PipelineMode = "Integrated"
+        },
+        @{
+            Name = "CerebrumPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "RightHemispherePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "LeftHemispherePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "CorpusCallosumPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "OccipitalLobePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "ParietalLobePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "TemporalLobePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "FrontalLobePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "GyrusPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "SulcusPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "ThalamusPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "HypothalamusPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "PituitaryGlandPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "PinealGlandPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "LimbicSystemPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "WavePatternPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "CerebellumPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "HippocampusPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "PrefrontalCortexPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "CranialNervesPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "DuraMaterPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "ArachnoidMaterPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "PiaMaterPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
+        },
+        @{
+            Name = "FossaePool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
         }
     )
 
@@ -79,56 +199,68 @@ try {
             Port = 8084
             Pool = "BasalGangliaPool"
             Path = "C:\inetpub\wwwroot\BasalGanglia"
-        }
-    )
-
-    foreach ($siteConfig in $sites) {
-        # Create directory if it doesn't exist
-        if (-not (Test-Path $siteConfig.Path)) {
-            New-Item -ItemType Directory -Path $siteConfig.Path -Force
-        }
-
-        $site = $manager.Sites[$siteConfig.Name]
-        if ($site -eq $null) {
-            $site = $manager.Sites.Add($siteConfig.Name, "http", "*:$($siteConfig.Port):", $siteConfig.Path)
-            $site.Applications["/"].ApplicationPoolName = $siteConfig.Pool
-            Write-Host "Created site: $($siteConfig.Name) on port $($siteConfig.Port)" -ForegroundColor Green
-        } else {
-            Write-Host "Site already exists: $($siteConfig.Name)" -ForegroundColor Yellow
-        }
-    }
-
-    # Commit changes
-    $manager.CommitChanges()
-    Write-Host "Configuration committed successfully" -ForegroundColor Green
-
-    # Configure Windows Firewall rules
-    foreach ($siteConfig in $sites) {
-        $ruleName = "IIS $($siteConfig.Name) Port $($siteConfig.Port)"
-        if (-not (Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue)) {
-            New-NetFirewallRule -DisplayName $ruleName `
-                              -Direction Inbound `
-                              -Protocol TCP `
-                              -LocalPort $siteConfig.Port `
-                              -Action Allow
-            Write-Host "Created firewall rule: $ruleName" -ForegroundColor Green
-        } else {
-            Write-Host "Firewall rule already exists: $ruleName" -ForegroundColor Yellow
-        }
-    }
-
-} catch {
-    Write-Error "Error configuring IIS: $_"
-    Write-Host "Stack Trace: $($_.Exception.StackTrace)" -ForegroundColor Red
-} finally {
-    if ($manager -ne $null) {
-        $manager.Dispose()
-    }
-}
-
-Write-Host "`nIIS Configuration Complete" -ForegroundColor Cyan
-Write-Host "Please verify the following manually:"
-Write-Host "1. Sites are running correctly (iisreset may be needed)"
-Write-Host "2. Application pools are started"
-Write-Host "3. Ports are accessible"
-Write-Host "4. Firewall rules are active"
+        },
+        @{
+            Name = "Cerebrum"
+            Port = 8090
+            Pool = "CerebrumPool"
+            Path = "C:\inetpub\wwwroot\Cerebrum"
+        },
+        @{
+            Name = "RightHemisphere"
+            Port = 8091
+            Pool = "RightHemispherePool"
+            Path = "C:\inetpub\wwwroot\RightHemisphere"
+        },
+        @{
+            Name = "LeftHemisphere"
+            Port = 8092
+            Pool = "LeftHemispherePool"
+            Path = "C:\inetpub\wwwroot\LeftHemisphere"
+        },
+        @{
+            Name = "CorpusCallosum"
+            Port = 8093
+            Pool = "CorpusCallosumPool"
+            Path = "C:\inetpub\wwwroot\CorpusCallosum"
+        },
+        @{
+            Name = "OccipitalLobe"
+            Port = 8094
+            Pool = "OccipitalLobePool"
+            Path = "C:\inetpub\wwwroot\OccipitalLobe"
+        },
+        @{
+            Name = "ParietalLobe"
+            Port = 8095
+            Pool = "ParietalLobePool"
+            Path = "C:\inetpub\wwwroot\ParietalLobe"
+        },
+        @{
+            Name = "TemporalLobe"
+            Port = 8096
+            Pool = "TemporalLobePool"
+            Path = "C:\inetpub\wwwroot\TemporalLobe"
+        },
+        @{
+            Name = "FrontalLobe"
+            Port = 8097
+            Pool = "FrontalLobePool"
+            Path = "C:\inetpub\wwwroot\FrontalLobe"
+        },
+        @{
+            Name = "Gyrus"
+            Port = 8098
+            Pool = "GyrusPool"
+            Path = "C:\inetpub\wwwroot\Gyrus"
+        },
+        @{
+            Name = "Sulcus"
+            Port = 8099
+            Pool = "SulcusPool"
+            Path = "C:\inetpub\wwwroot\Sulcus"
+        },
+        @{
+            Name = "Thalamus"
+            Port = 8100
+            Pool = "ThalamusPool"
