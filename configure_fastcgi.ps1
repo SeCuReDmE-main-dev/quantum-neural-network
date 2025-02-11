@@ -15,34 +15,48 @@ if (-not (Test-Path "C:\Python310\Scripts\wfastcgi.py")) {
     wfastcgi-enable
 }
 
-# Configure FastCGI Application
-$fastCgiPath = "IIS:\FastCgi\-"
-$pythonPath = "C:\Python310\python.exe"
-$wfastcgiPath = "C:\Python310\Scripts\wfastcgi.py"
+# Requires -RunAsAdministrator
+Write-Host "Configuring FastCGI for Python..." -ForegroundColor Cyan
 
-# Create FastCGI application
-Add-WebConfiguration /system.webServer/fastCgi -Value @{
+$pythonPath = "C:\Users\jeans\OneDrive\Desktop\letdo it\AdvancedMaterialScience\venv\Scripts\python.exe"
+$wfastcgiPath = "C:\Users\jeans\OneDrive\Desktop\letdo it\AdvancedMaterialScience\venv\Scripts\wfastcgi.py"
+
+# Configure FastCGI Settings
+$fastCgiSection = "system.webServer/fastCgi"
+$fastCgiArgs = @{
     fullPath = $pythonPath
     arguments = $wfastcgiPath
-    maxInstances = 32
-    idleTimeout = 300
-    activityTimeout = 300
-    requestTimeout = 900
-    instanceMaxRequests = 10000
-    protocol = "NamedPipe"
-    flushNamedPipe = "False"
+    maxInstances = "4"
+    idleTimeout = "1800"
 }
 
-# Configure environment variables
-$envVars = @{
-    "PYTHONPATH" = "C:\Users\jeans\OneDrive\Desktop\letdo it\AdvancedMaterialScience"
-    "WSGI_HANDLER" = "quantum_neural.neural_network.persona_manager.app"
-}
-
-foreach ($key in $envVars.Keys) {
-    Set-WebConfigurationProperty -Filter "system.webServer/fastCgi/application[@fullPath='$pythonPath']/environmentVariables/environmentVariable[@name='$key']" `
-        -Name "value" `
-        -Value $envVars[$key]
+# Add FastCGI application
+try {
+    Import-Module WebAdministration
+    
+    # Remove existing configuration if any
+    Clear-WebConfiguration -Filter "$fastCgiSection/application[@fullPath='$pythonPath']"
+    
+    # Add new configuration
+    Add-WebConfiguration -Filter $fastCgiSection -Value $fastCgiArgs -PSPath "MACHINE/WEBROOT/APPHOST"
+    
+    # Set environment variables
+    $envVars = @{
+        "PYTHONPATH" = "C:\Users\jeans\OneDrive\Desktop\letdo it\AdvancedMaterialScience"
+        "WSGI_HANDLER" = "app.app"
+    }
+    
+    foreach ($var in $envVars.GetEnumerator()) {
+        Set-WebConfigurationProperty -Filter "$fastCgiSection/application[@fullPath='$pythonPath']/environmentVariables" `
+            -Name "." `
+            -Value @{name=$var.Key; value=$var.Value}
+    }
+    
+    Write-Host "FastCGI configuration completed successfully" -ForegroundColor Green
+    Write-Host "Please restart IIS using 'iisreset' command" -ForegroundColor Yellow
+} catch {
+    Write-Error "Failed to configure FastCGI: $_"
+    exit 1
 }
 
 # Verify app pools
