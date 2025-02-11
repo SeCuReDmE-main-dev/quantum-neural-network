@@ -4,6 +4,10 @@ plugins {
 
 repositories {
     mavenCentral()
+    // Add repository for UCanAccess
+    maven {
+        url "https://maven.icm.edu.pl/artifactory/repo/"
+    }
 }
 
 dependencies {
@@ -30,4 +34,35 @@ dependencies {
     implementation 'org.apache.mahout:mahout-core:14.1.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:3.9.0'
+
+    // Microsoft Access database connectivity
+    implementation 'net.sf.ucanaccess:ucanaccess:5.0.1'
+    implementation 'com.healthmarketscience.jackcess:jackcess:4.0.1'
+    implementation 'org.hsqldb:hsqldb:2.7.1'
+    implementation 'commons-logging:commons-logging:1.2'
+    implementation 'commons-lang:commons-lang:2.6'
+
+    // JDBC drivers
+    implementation 'net.sourceforge.jtds:jtds:1.3.1'  // For SQL Server
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:9.4.0.jre11'  // Microsoft SQL Server JDBC
+}
+
+// Configuration for database connectivity
+configurations {
+    implementation {
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+    }
+}
+
+// Add system properties for database access
+task setDatabaseProperties {
+    doFirst {
+        System.setProperty('net.ucanaccess.jdbc.ucanaccess_properties', 'memory=false')
+        System.setProperty('jdbc.drivers', 'net.ucanaccess.jdbc.UcanaccessDriver')
+    }
+}
+
+// Make all tasks depend on database properties
+tasks.withType(JavaExec) {
+    dependsOn setDatabaseProperties
 }
