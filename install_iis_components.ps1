@@ -1,11 +1,6 @@
 # Run this script as Administrator to install missing IIS components
 Write-Host "Installing IIS components..." -ForegroundColor Cyan
-dism /online /enable-feature /featurename:IIS-WebServerRole /all
-dism /online /enable-feature /featurename:IIS-WebServer /all
-dism /online /enable-feature /featurename:IIS-CommonHttpFeatures /all
-dism /online /enable-feature /featurename:IIS-ManagementConsole /all
 dism /online /enable-feature /featurename:IIS-ManagementScriptingTools /all
-dism /online /enable-feature /featurename:IIS-ApplicationDevelopment /all
 dism /online /enable-feature /featurename:IIS-NetFxExtensibility45 /all
 dism /online /enable-feature /featurename:IIS-ISAPIExtensions /all
 dism /online /enable-feature /featurename:IIS-ISAPIFilter /all
