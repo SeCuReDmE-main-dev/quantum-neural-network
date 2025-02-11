@@ -262,3 +262,24 @@ Set-Content -Path "$sitePath\Web.config" -Value "
         <add name='CreateBrainTables' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\create_brain_tables.sql;' />
         <add name='HippocampusTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Hippocampus.accdb;' />
         <add name='LimbicSystemTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Limbic System.accdb;' />
+        <add name='NeuralNetworkTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Neural_network.accdb;' />
+        <add name='OccipitalLobeTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Occipital Lobe.accdb;' />
+        <add name='PrefrontalCortexTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\SeCuReDmE_Prefrontal Cortex.accdb;' />
+        <add name='ThalamusTable' connectionString='Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Owner\Desktop\database center\thalamus_table.sql;' />
+    </connectionStrings>
+</configuration>
+"
+
+# Step 6: Validate Installation and Start Services
+Write-Output "Starting and validating services..."
+Start-Service W3SVC
+Start-Process -FilePath "$IgnitePath\bin\ignite.bat"
+Start-Process -FilePath "$MahoutPath\bin\mahout.bat"
+try {
+    Start-Process -FilePath "$IcebergPath\bin\iceberg.bat" -ErrorAction Stop
+} catch {
+    Write-Error "Failed to start Iceberg service: $_"
+    exit 1
+}
+
+Write-Output "Setup Complete. IIS with Apache Ignite, Mahout, and Iceberg is ready for use."
