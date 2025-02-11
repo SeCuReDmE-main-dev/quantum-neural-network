@@ -28,6 +28,11 @@ try {
             Name = "NeuralNetworkCorePool"
             RuntimeVersion = "v4.0"
             PipelineMode = "Integrated"
+        },
+        @{
+            Name = "BasalGangliaPool"
+            RuntimeVersion = "v4.0"
+            PipelineMode = "Integrated"
         }
     )
 
@@ -68,6 +73,12 @@ try {
             Port = 8080
             Pool = "NeuralNetworkCorePool"
             Path = "C:\inetpub\wwwroot\NeuralNetworkCore"
+        },
+        @{
+            Name = "BasalGanglia"
+            Port = 8084
+            Pool = "BasalGangliaPool"
+            Path = "C:\inetpub\wwwroot\BasalGanglia"
         }
     )
 
