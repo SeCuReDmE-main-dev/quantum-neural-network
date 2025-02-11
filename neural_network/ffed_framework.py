@@ -11,6 +11,227 @@ from cryptography.hazmat.backends import default_backend
 import matplotlib.pyplot as plt
 import torchquantum as tq
 import random
+from typing import Dict, Any, List, Optional, Tuple
+from dataclasses import dataclass
+from .phi_framework import PhiConfig
+import h2o
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
+@dataclass
+class FfeDConfig:
+    """Configuration for Fractal Fibonacci Encryption"""
+    fractal_depth: int = 8
+    fibonacci_length: int = 16
+    encryption_rounds: int = 3
+    phi_scaling: bool = True
+
+class FractalFibonacciEncryption:
+    """Implements FfeD for secure module communication"""
+    
+    def __init__(self, config: Optional[FfeDConfig] = None, phi_config: Optional[PhiConfig] = None):
+        self.config = config or FfeDConfig()
+        self.phi_config = phi_config or PhiConfig()
+        self._initialize_sequences()
+        
+    def _initialize_sequences(self):
+        """Initialize fractal and Fibonacci sequences"""
+        # Generate Fibonacci sequence
+        self.fibonacci = self._generate_fibonacci(self.config.fibonacci_length)
+        
+        # Generate fractal sequence
+        self.fractal = self._generate_fractal(self.config.fractal_depth)
+        
+        # Initialize encryption key
+        self._initialize_encryption()
+        
+    def _generate_fibonacci(self, length: int) -> np.ndarray:
+        """Generate Fibonacci sequence"""
+        sequence = [1, 1]
+        while len(sequence) < length:
+            sequence.append(sequence[-1] + sequence[-2])
+            
+        # Apply phi-scaling if enabled
+        if self.config.phi_scaling:
+            sequence = np.array(sequence) * self.phi_config.phi
+            
+        return np.array(sequence)
+        
+    def _generate_fractal(self, depth: int) -> np.ndarray:
+        """Generate fractal sequence using Mandelbrot set"""
+        x = np.linspace(-2, 1, 2**depth)
+        y = np.linspace(-1.5, 1.5, 2**depth)
+        X, Y = np.meshgrid(x, y)
+        C = X + Y*1j
+        
+        Z = np.zeros_like(C)
+        fractal = np.zeros_like(C)
+        
+        for i in range(self.config.encryption_rounds):
+            mask = np.abs(Z) <= 2
+            Z[mask] = Z[mask]**2 + C[mask]
+            fractal[mask] = i
+            
+        if self.config.phi_scaling:
+            fractal *= self.phi_config.phi
+            
+        return fractal
+        
+    def _initialize_encryption(self):
+        """Initialize encryption using fractal and Fibonacci sequences"""
+        # Combine sequences for key generation
+        combined = np.concatenate([
+            self.fibonacci,
+            self.fractal.flatten()
+        ])
+        
+        # Generate key using PBKDF2
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=np.array(combined[:16], dtype=np.int32).tobytes(),
+            iterations=100000
+        )
+        
+        key = kdf.derive(combined.tobytes())
+        self.fernet = Fernet(base64.b64encode(key))
+        
+    def encrypt_message(self, message: Dict[str, Any]) -> Tuple[bytes, Dict[str, Any]]:
+        """Encrypt message using FfeD"""
+        try:
+            # Convert message to bytes
+            message_bytes = json.dumps(message).encode()
+            
+            # Apply fractal transformation
+            transformed = self._apply_fractal_transform(message_bytes)
+            
+            # Apply Fibonacci weighting
+            weighted = self._apply_fibonacci_weight(transformed)
+            
+            # Encrypt using Fernet
+            encrypted = self.fernet.encrypt(weighted)
+            
+            # Generate metadata
+            metadata = {
+                'fractal_depth': self.config.fractal_depth,
+                'fibonacci_length': self.config.fibonacci_length,
+                'phi_scaling': float(self.phi_config.phi),
+                'timestamp': datetime.now().isoformat()
+            }
+            
+            return encrypted, metadata
+            
+        except Exception as e:
+            print(f"Error encrypting message: {e}")
+            raise
+            
+    def decrypt_message(self, 
+                       encrypted_message: bytes,
+                       metadata: Dict[str, Any]) -> Dict[str, Any]:
+        """Decrypt message using FfeD"""
+        try:
+            # Decrypt using Fernet
+            decrypted = self.fernet.decrypt(encrypted_message)
+            
+            # Remove Fibonacci weighting
+            unweighted = self._remove_fibonacci_weight(decrypted)
+            
+            # Remove fractal transformation
+            untransformed = self._remove_fractal_transform(unweighted)
+            
+            # Convert back to dictionary
+            return json.loads(untransformed.decode())
+            
+        except Exception as e:
+            print(f"Error decrypting message: {e}")
+            raise
+            
+    def _apply_fractal_transform(self, data: bytes) -> bytes:
+        """Apply fractal transformation to data"""
+        # Convert to numpy array
+        arr = np.frombuffer(data, dtype=np.uint8)
+        
+        # Reshape to match fractal dimensions if possible
+        size = 2**self.config.fractal_depth
+        if len(arr) < size*size:
+            # Pad with zeros
+            padded = np.zeros(size*size, dtype=np.uint8)
+            padded[:len(arr)] = arr
+            arr = padded
+            
+        arr = arr.reshape((size, size))
+        
+        # Apply fractal transformation
+        transformed = arr * self.fractal.astype(np.uint8)
+        
+        return transformed.tobytes()
+        
+    def _remove_fractal_transform(self, data: bytes) -> bytes:
+        """Remove fractal transformation from data"""
+        # Convert to numpy array
+        arr = np.frombuffer(data, dtype=np.uint8)
+        
+        # Reshape to match fractal dimensions
+        size = 2**self.config.fractal_depth
+        arr = arr.reshape((size, size))
+        
+        # Remove fractal transformation
+        untransformed = arr / self.fractal.astype(np.uint8)
+        
+        # Convert back to bytes, removing padding
+        return untransformed.tobytes().rstrip(b'\x00')
+        
+    def _apply_fibonacci_weight(self, data: bytes) -> bytes:
+        """Apply Fibonacci weighting to data"""
+        # Convert to numpy array
+        arr = np.frombuffer(data, dtype=np.uint8)
+        
+        # Apply weights cyclically
+        weights = np.tile(self.fibonacci, len(arr)//len(self.fibonacci) + 1)[:len(arr)]
+        weighted = arr * weights.astype(np.uint8)
+        
+        return weighted.tobytes()
+        
+    def _remove_fibonacci_weight(self, data: bytes) -> bytes:
+        """Remove Fibonacci weighting from data"""
+        # Convert to numpy array
+        arr = np.frombuffer(data, dtype=np.uint8)
+        
+        # Remove weights cyclically
+        weights = np.tile(self.fibonacci, len(arr)//len(self.fibonacci) + 1)[:len(arr)]
+        unweighted = arr / weights.astype(np.uint8)
+        
+        return unweighted.tobytes()
+        
+    def update_sequences(self):
+        """Update fractal and Fibonacci sequences"""
+        # Regenerate sequences
+        self.fibonacci = self._generate_fibonacci(self.config.fibonacci_length)
+        self.fractal = self._generate_fractal(self.config.fractal_depth)
+        
+        # Reinitialize encryption
+        self._initialize_encryption()
+        
+    def get_encryption_metrics(self) -> Dict[str, Any]:
+        """Get metrics about the encryption state"""
+        return {
+            'fibonacci_stats': {
+                'length': len(self.fibonacci),
+                'mean': float(np.mean(self.fibonacci)),
+                'std': float(np.std(self.fibonacci))
+            },
+            'fractal_stats': {
+                'depth': self.config.fractal_depth,
+                'size': self.fractal.shape,
+                'complexity': float(np.mean(np.abs(np.diff(self.fractal.flatten()))))
+            },
+            'encryption_config': {
+                'rounds': self.config.encryption_rounds,
+                'phi_scaling': self.config.phi_scaling,
+                'phi_value': float(self.phi_config.phi)
+            }
+        }
 
 class FractalGeometry:
     def __init__(self, N, r):
