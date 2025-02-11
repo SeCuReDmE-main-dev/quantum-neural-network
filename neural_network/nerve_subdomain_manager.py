@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from quantum_neural.neural_network.phi_framework import PhiConfig
 from quantum_neural.neural_network.quantum_neural_bridge import QuantumNeuralBridge
 from quantum_neural.neural_network.flywheel_gateway import FlywheelGateway
+from quantum_neural.neural_network.fossa_data_manager import FossaDataManager
 
 @dataclass
 class SubdomainState:
@@ -23,8 +24,9 @@ class NerveSubdomainManager:
         self.phi_config = phi_config or PhiConfig()
         self.quantum_bridge = QuantumNeuralBridge(self.phi_config)
         self.flywheel = FlywheelGateway(self.phi_config)
+        self.fossa_manager = FossaDataManager(self.phi_config)
         self.subdomains = self._initialize_subdomains()
-        
+    
     def _initialize_subdomains(self) -> Dict[str, SubdomainState]:
         """Initialize the six nerve subdomains with their roles"""
         subdomains = {}
@@ -45,18 +47,44 @@ class NerveSubdomainManager:
             ]
         }
         
-        # Initialize each subdomain with φ-scaled properties
+        # Load existing states from databases or initialize new ones
         for fossa_type, configs in fossa_configs.items():
+            stored_states = self.fossa_manager.get_subdomain_states(fossa_type)
+            stored_states_dict = {s['name']: s for s in stored_states}
+            
             for name, db_center in configs:
-                quantum_state = np.random.randn(4, 4) * self.phi_config.phi
+                if name in stored_states_dict:
+                    state = stored_states_dict[name]
+                    quantum_state = state['quantum_state']
+                    neural_density = state['neural_density']
+                    plasticity = state['plasticity']
+                else:
+                    # Initialize new state with φ-scaled properties
+                    quantum_state = np.random.randn(4, 4) * self.phi_config.phi
+                    neural_density = np.random.rand() * self.phi_config.phi
+                    plasticity = np.random.rand() * self.phi_config.phi
+                
                 subdomains[name] = SubdomainState(
                     name=name,
                     fossa_type=fossa_type,
                     database_center=db_center,
-                    neural_density=np.random.rand() * self.phi_config.phi,
-                    plasticity=np.random.rand() * self.phi_config.phi,
+                    neural_density=neural_density,
+                    plasticity=plasticity,
                     quantum_state=quantum_state
                 )
+                
+                # Store initial state if new
+                if name not in stored_states_dict:
+                    self.fossa_manager.update_subdomain_state(
+                        fossa_type,
+                        {
+                            'name': name,
+                            'quantum_state': quantum_state,
+                            'neural_density': neural_density,
+                            'plasticity': plasticity,
+                            'entanglement_level': 0.0
+                        }
+                    )
         
         return subdomains
     
@@ -71,13 +99,24 @@ class NerveSubdomainManager:
         # Apply quantum filtration
         filtered_data = self._apply_quantum_filtration(pathway_data, subdomain)
         
-        # Get metrics about the filtration process
+        # Calculate metrics
         metrics = {
             'neural_density': subdomain.neural_density,
             'plasticity': subdomain.plasticity,
             'quantum_coherence': float(np.abs(subdomain.quantum_state).mean()),
             'phi_scaling': float(self.phi_config.phi)
         }
+        
+        # Store pathway state in appropriate fossa database
+        pathway_state = {
+            'name': f"{source_region}_pathway",
+            'source': source_region,
+            'target': subdomain.name,
+            'quantum_state': subdomain.quantum_state,
+            'neural_density': subdomain.neural_density,
+            'plasticity': subdomain.plasticity
+        }
+        self.fossa_manager.store_pathway_state(subdomain.fossa_type, pathway_state)
         
         return filtered_data, metrics
     
@@ -121,10 +160,8 @@ class NerveSubdomainManager:
         return filtered_data
     
     def synchronize_subdomains(self) -> Dict[str, float]:
-        """Synchronize all subdomains through the flywheel"""
-        sync_metrics = {}
-        
-        # Rotate flywheel to maintain synchronization
+        """Synchronize all subdomains through the flywheel and databases"""
+        # First synchronize through flywheel
         rotation_metrics = self.flywheel.rotate_flywheel()
         
         # Update each subdomain's quantum state based on rotation
@@ -134,7 +171,19 @@ class NerveSubdomainManager:
             evolved_state = subdomain.quantum_state * np.exp(1j * phase)
             subdomain.quantum_state = evolved_state
             
-            # Calculate synchronization metric
-            sync_metrics[name] = float(np.abs(evolved_state).mean() * self.phi_config.phi)
+            # Update state in database
+            self.fossa_manager.update_subdomain_state(
+                subdomain.fossa_type,
+                {
+                    'name': name,
+                    'quantum_state': evolved_state,
+                    'neural_density': subdomain.neural_density,
+                    'plasticity': subdomain.plasticity,
+                    'entanglement_level': float(np.abs(evolved_state).mean())
+                }
+            )
+        
+        # Synchronize across fossae databases
+        sync_metrics = self.fossa_manager.synchronize_fossae()
         
         return sync_metrics
