@@ -366,3 +366,92 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 3. **Verify the connection**:
    Ensure that MindsDB is running and properly configured to connect to the PostgreSQL database. Check the MindsDB logs for any connection-related messages or errors. Use a PostgreSQL client (e.g., `psql`, pgAdmin) to connect to the PostgreSQL database and verify that the database is accessible and the user has the necessary permissions. Execute a simple query through MindsDB to test the connection.
+
+# Quantum Neural Framework
+
+## Overview
+The quantum neural framework implements the core quantum computing and neural network integration layer of the brain system.
+
+## Directory Structure
+```
+quantum_neural/
+├── build/              # Build artifacts
+├── fred_handler/       # Quantum state management
+├── neural_network/     # Neural network implementations
+├── phi_framework/      # φ-based mathematical framework
+└── integration_tests/  # Integration test suites
+```
+
+## Key Features
+- Quantum-classical neural bridge
+- φ-scaled mathematical operations
+- Heisenberg calculus integration
+- Quantum state preservation
+- Neural pathway optimization
+
+## Components
+
+### Phi Framework
+The φ-framework provides:
+- Golden ratio scaling
+- Quantum differential geometry
+- Cyclic cohomology operations
+- Noncommutative topology
+
+### Neural Network
+Implements:
+- Quantum neural networks
+- Deep learning integration
+- Quantum backpropagation
+- State-preserving gradients
+
+### Fred Handler
+Manages:
+- Quantum state coherence
+- Entanglement preservation
+- Anti-decoherence measures
+- State synchronization
+
+## Configuration
+Configuration files in `config/`:
+- `quantum_config.json`: Quantum settings
+- `neural_config.json`: Neural network parameters
+- `phi_config.json`: φ-framework configuration
+
+## IIS Integration
+PowerShell scripts for IIS setup:
+- `configure_brain_parts.ps1`
+- `configure_dream_processor.ps1`
+- `configure_iis_native.ps1`
+- `fix_iis_prerequisites.ps1`
+
+## Development
+
+### Requirements
+- Python 3.8+
+- CUDA toolkit
+- Quantum computing frameworks
+- Neural network libraries
+
+### Setup
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Initialize quantum environment
+python setup.py develop
+
+# Run tests
+pytest integration_tests/
+```
+
+## Documentation
+- [Quantum Neural Bridge](../docs/wiki/components/Quantum-Neural-Bridge.md)
+- [Phi Framework Guide](../docs/wiki/components/Phi-Framework.md)
+- [Neural Network Architecture](../docs/wiki/components/Neural-Network.md)
+
+## Security
+- Quantum encryption
+- State verification
+- Decoherence protection
+- Neural pathway authentication
