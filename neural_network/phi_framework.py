@@ -62,31 +62,6 @@ class DifferentialGeometry:
     def parallel_transport(self, vector: np.ndarray, path: np.ndarray) -> np.ndarray:
         """Implements ϕ-modified parallel transport"""
         transported = vector.copy()
-
-    def wodzicki_residue(self, operator: np.ndarray) -> complex:
-        """Calculates ϕ-modified Wodzicki residue"""
-        # Implementation for trace functional on pseudodifferential operators
-        trace = np.trace(operator)
-        return self.phi * trace
-
-class DifferentialGeometry:
-    """Implements ϕ-based differential geometry operations"""
-    
-    def __init__(self, framework: PhiFramework):
-        self.framework = framework
-        self.phi = framework.phi
-    
-    def connection_form(self, tangent_vector: np.ndarray) -> np.ndarray:
-        """Calculates ϕ-modified connection form"""
-        return self.phi * np.gradient(tangent_vector)
-    
-    def curvature(self, connection: np.ndarray) -> np.ndarray:
-        """Computes ϕ-modified curvature form"""
-        return self.phi * (np.gradient(connection, axis=0) - np.gradient(connection, axis=1))
-    
-    def parallel_transport(self, vector: np.ndarray, path: np.ndarray) -> np.ndarray:
-        """Implements ϕ-modified parallel transport"""
-        transported = vector.copy()
         for step in path:
             transported += self.phi * np.cross(step, transported)
         return transported
