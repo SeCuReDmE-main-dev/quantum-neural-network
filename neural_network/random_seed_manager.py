@@ -16,7 +16,7 @@ class RandomSeedManager:
         self.random = random.Random(base_seed)
         self.secrets = secrets.SystemRandom()
         self.set_seed(base_seed)
-
+        
     def set_seed(self, seed: Optional[int] = None) -> int:
         """Set random seed for all random number generators"""
         if seed is None:
