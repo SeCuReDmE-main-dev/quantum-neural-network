@@ -3,6 +3,12 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 from typing import Dict, List, Tuple, Optional
+import os
+
+# Create output directory for plots
+PLOT_DIR = "quantum_plots"
+if not os.path.exists(PLOT_DIR):
+    os.makedirs(PLOT_DIR)
 
 class QuantumDataVisualizer:
     def __init__(self, data=None):
@@ -18,7 +24,8 @@ class QuantumDataVisualizer:
         matrix = np.corrcoef(self.data.T)
         sns.heatmap(matrix, cmap='viridis', annot=True)
         plt.title('Qubit Relationship Matrix')
-        plt.show()
+        plt.savefig(os.path.join(PLOT_DIR, 'qubit_relationships.png'))
+        plt.close()
         
     def visualize_data_packet_flow(self):
         """Visualize quantum data packet flow"""
@@ -32,7 +39,8 @@ class QuantumDataVisualizer:
         plt.xlabel('Time Step')
         plt.ylabel('Packet Value')
         plt.grid(True)
-        plt.show()
+        plt.savefig(os.path.join(PLOT_DIR, 'data_packet_flow.png'))
+        plt.close()
         
     def visualize_quantum_state_similarity(self):
         """Visualize similarity between quantum states"""
@@ -59,7 +67,8 @@ class QuantumDataVisualizer:
         for i in range(len(transformed)):
             plt.annotate(f'State {i}', (transformed[i, 0], transformed[i, 1]))
         plt.grid(True)
-        plt.show()
+        plt.savefig(os.path.join(PLOT_DIR, 'quantum_state_similarity.png'))
+        plt.close()
         
     def plot_eigenspectrum(self, eigenvalues):
         """Plot eigenvalue spectrum"""
@@ -74,7 +83,8 @@ class QuantumDataVisualizer:
         plt.xlabel('Real Part')
         plt.ylabel('Imaginary Part')
         plt.grid(True)
-        plt.show()
+        plt.savefig(os.path.join(PLOT_DIR, 'eigenspectrum.png'))
+        plt.close()
         
     def plot_stability_metric(self, stability_history):
         """Plot stability metric over time"""
@@ -84,7 +94,8 @@ class QuantumDataVisualizer:
         plt.xlabel('Time Step')
         plt.ylabel('Stability Metric')
         plt.grid(True)
-        plt.show()
+        plt.savefig(os.path.join(PLOT_DIR, 'stability_metric.png'))
+        plt.close()
 
 if __name__ == "__main__":
     # Test visualization module
@@ -94,20 +105,27 @@ if __name__ == "__main__":
     test_data = np.random.rand(10, 5)  # 10 samples with 5 features
     visualizer = QuantumDataVisualizer(test_data)
     
-    print("\nGenerating visualizations...")
+    print("\nGenerating visualizations in 'quantum_plots' directory...")
     
     # Test basic visualizations
     visualizer.visualize_qubit_relationships()
+    print("Generated qubit_relationships.png")
+    
     visualizer.visualize_data_packet_flow()
+    print("Generated data_packet_flow.png")
+    
     visualizer.visualize_quantum_state_similarity()
+    print("Generated quantum_state_similarity.png")
     
     # Test eigenspectrum visualization
     test_matrix = np.random.rand(5, 5)
     eigenvalues = np.linalg.eigvals(test_matrix)
     visualizer.plot_eigenspectrum(eigenvalues)
+    print("Generated eigenspectrum.png")
     
     # Test stability visualization
     stability_history = np.random.rand(20)
     visualizer.plot_stability_metric(stability_history)
+    print("Generated stability_metric.png")
     
-    print("\nVisualization tests complete.")
+    print("\nVisualization tests complete. Check the 'quantum_plots' directory for the generated plots.")
