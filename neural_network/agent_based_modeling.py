@@ -1,6 +1,12 @@
 import numpy as np
 from typing import Dict, List, Optional, Any
-from .phi_framework import PhiFramework, PhiConfig
+import sys
+import os
+
+# Add project root to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+from quantum_neural.neural_network.phi_framework import PhiFramework, PhiConfig
 
 class Agent:
     def __init__(self, brain_region: str, state: Optional[np.ndarray] = None):
@@ -70,15 +76,18 @@ class AgentBasedModeling:
         fourier = np.fft.fft(state)
         amplitudes = np.abs(fourier)
         return self.phi_framework.apply_phi_scaling(amplitudes)
-        
-    def analyze_emergence(self, simulation_results: Dict) -> Dict[str, Any]:
+
+    def analyze_emergence(self) -> Dict[str, Any]:
         """Analyze emergent behavior from simulation"""
+        if not self.agents:
+            return {"error": "No agents to analyze"}
+            
         trajectory_complexity = self._analyze_trajectory_complexity()
-        quantum_evolution = self._analyze_quantum_evolution(simulation_results)
+        state_evolution = self._analyze_state_evolution()
         
         return {
             'trajectory_complexity': trajectory_complexity,
-            'quantum_evolution': quantum_evolution
+            'state_evolution': state_evolution
         }
         
     def _analyze_trajectory_complexity(self) -> Dict[str, float]:
@@ -91,19 +100,17 @@ class AgentBasedModeling:
             complexity[f'Agent_{i}'] = self._calculate_fractal_dimension(trajectory)
         return complexity
         
-    def _analyze_quantum_evolution(self, results: Dict) -> Dict[str, float]:
+    def _analyze_state_evolution(self) -> Dict[str, float]:
         """Analyze quantum state evolution"""
         evolution = {}
-        history = results['history']
-        
-        for agent in self.agents:
-            region = agent.brain_region
-            initial_pattern = history[0]['brain_regions'][region]['wave_pattern']
-            final_pattern = history[-1]['brain_regions'][region]['wave_pattern']
+        for i, agent in enumerate(self.agents):
+            history = np.array(agent.history)
+            initial_state = history[0]
+            final_state = history[-1]
             
             # Calculate φ-scaled state change
-            evolution[region] = float(
-                self.phi_framework.compute_phi_resonance(initial_pattern, final_pattern)
+            evolution[f'Agent_{i}'] = float(
+                self.phi_framework.compute_phi_resonance(initial_state, final_state)
             )
             
         return evolution
@@ -124,28 +131,36 @@ class AgentBasedModeling:
         
         return float(self.phi_framework.apply_phi_scaling(np.array([dimension])))
 
-# Example usage
 if __name__ == "__main__":
-    modeling = AgentBasedModeling()
+    # Test the agent-based modeling system
+    print("Initializing Agent-Based Modeling system...")
     
-    # Initialize brain regions
-    eeg_data = np.random.randn(1000)
-    activity_data = np.random.randn(1000)
+    # Create modeling system
+    abm = AgentBasedModeling()
     
-    # Register brain regions
-    modeling.brain_analyzer.register_brain_region(
-        "Cerebrum", 1400, 86_000_000_000, activity_data, eeg_data
-    )
-    modeling.brain_analyzer.register_brain_region(
-        "Cerebellum", 150, 69_000_000_000, activity_data, eeg_data
-    )
-    
-    # Create agents for each region
-    agent1 = modeling.create_agent("Cerebrum")
-    agent2 = modeling.create_agent("Cerebellum")
+    # Create test agents
+    print("\nCreating test agents...")
+    regions = ["Cerebrum", "Cerebellum", "Brainstem"]
+    for region in regions:
+        agent = abm.create_agent(region)
+        print(f"Created agent for {region} with initial state shape: {agent.state.shape}")
     
     # Run simulation
-    results = modeling.simulate_agent_interaction()
+    print("\nRunning quantum simulation...")
+    steps = 50
+    results = abm.simulate_agent_interaction(steps)
+    print(f"Completed {steps} simulation steps")
     
-    # Analyze emergence
-    emergence_analysis = modeling.analyze_emergence(results)
+    # Analyze results
+    print("\nAnalyzing emergence patterns...")
+    analysis = abm.analyze_emergence()
+    
+    print("\nTrajectory Complexity:")
+    for agent, complexity in analysis['trajectory_complexity'].items():
+        print(f"{agent}: {complexity:.4f}")
+    
+    print("\nState Evolution:")
+    for agent, evolution in analysis['state_evolution'].items():
+        print(f"{agent}: {evolution:.4f}")
+    
+    print("\nAgent-Based Modeling simulation complete.")
