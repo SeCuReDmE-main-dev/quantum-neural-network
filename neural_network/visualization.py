@@ -3,9 +3,15 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 from typing import Dict, List, Tuple, Optional
-from .phi_framework import PhiFramework, PhiConfig
-from .agent_based_modeling import AgentBasedModeling
-from .brain_structure import BrainStructureAnalysis
+import sys
+import os
+
+# Add the project root to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+from quantum_neural.neural_network.phi_framework import PhiFramework, PhiConfig
+from quantum_neural.neural_network.agent_based_modeling import AgentBasedModeling
+from quantum_neural.neural_network.brain_structure import BrainStructureAnalysis
 import torch
 
 class QuantumDataVisualizer:
