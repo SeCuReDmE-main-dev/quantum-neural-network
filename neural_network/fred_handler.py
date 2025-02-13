@@ -21,8 +21,14 @@ class FredHandler:
     def visualize_data(self):
         if self.data is None:
             return None
+        # Create symmetric distance matrix
+        distances = np.zeros((self.data.shape[0], self.data.shape[0]))
+        for i in range(self.data.shape[0]):
+            for j in range(self.data.shape[0]):
+                distances[i,j] = np.linalg.norm(self.data[i] - self.data[j])
+        
         mds = MDS(n_components=2, dissimilarity='precomputed')
-        transformed_data = mds.fit_transform(self.data)
+        transformed_data = mds.fit_transform(distances)
         return transformed_data
 
     def perform_eigenvalue_analysis(self, matrix):
@@ -55,7 +61,7 @@ if __name__ == "__main__":
     handler = FredHandler()
     
     # Test with sample data
-    test_data = np.random.rand(10, 10)
+    test_data = np.random.rand(10, 5)  # 10 samples with 5 features
     handler.load_data(test_data)
     
     # Test data visualization
