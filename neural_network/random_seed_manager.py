@@ -2,25 +2,26 @@ import numpy as np
 import random
 import secrets
 import torch
-from typing import Optional, Dict, Any, List, Sequence
+from typing import Optional, Dict, Any, List, Sequence, Union
 import json
 import os
 
 class RandomSeedManager:
     def __init__(self, base_seed: int = 42):
         self.base_seed = base_seed
-        self.current_seed = base_seed
+        self.current_seed: int = base_seed
         self.seed_history: List[int] = []
         self.experiment_seeds: Dict[str, int] = {}
         self.rng = np.random.default_rng(base_seed)
         self.random = random.Random(base_seed)
-        self.secrets = secrets.SystemRandom()
         self.set_seed(base_seed)
         
     def set_seed(self, seed: Optional[int] = None) -> int:
         """Set random seed for all random number generators"""
         if seed is None:
             seed = self.current_seed
+        if seed is None:  # Double check since self.current_seed could be None
+            seed = self.base_seed
             
         # Set seeds for different libraries
         random.seed(seed)
@@ -41,6 +42,8 @@ class RandomSeedManager:
     def get_next_seed(self) -> int:
         """Generate next seed using golden ratio"""
         golden_ratio = (1 + 5 ** 0.5) / 2
+        if self.current_seed is None:
+            self.current_seed = self.base_seed
         next_seed = int(self.current_seed * golden_ratio) % (2**32)
         return next_seed
 
@@ -52,6 +55,8 @@ class RandomSeedManager:
 
     def get_seed(self) -> int:
         """Get current seed"""
+        if self.current_seed is None:
+            self.current_seed = self.base_seed
         return self.current_seed
 
     def random_bytes(self, length: int) -> bytes:
@@ -64,7 +69,10 @@ class RandomSeedManager:
 
     def random_floats(self, size: Optional[int] = None) -> np.ndarray:
         """Generate random floats in range [0.0, 1.0)"""
-        return self.rng.random(size)
+        result = self.rng.random(size)
+        if isinstance(result, float):
+            return np.array([result])
+        return result
 
     def random_choice(self, seq: Sequence) -> Any:
         """Choose a random element from a sequence"""
@@ -76,11 +84,11 @@ class RandomSeedManager:
 
     def secure_random_bytes(self, length: int) -> bytes:
         """Generate cryptographically secure random bytes"""
-        return self.secrets.token_bytes(length)
+        return secrets.token_bytes(length)
 
     def secure_random_integers(self, low: int, high: int) -> int:
         """Generate cryptographically secure random integer"""
-        return self.secrets.randbelow(high - low) + low
+        return secrets.randbelow(high - low) + low
 
     def register_experiment(self, experiment_name: str, seed: Optional[int] = None) -> int:
         """Register a new experiment with its seed"""
@@ -154,7 +162,7 @@ if __name__ == "__main__":
     print("\nTesting experiment registration:")
     exp1_seed = seed_manager.register_experiment("quantum_evolution_test")
     exp2_seed = seed_manager.register_experiment("neural_network_training")
-    print(f"Registered experiments with seeds: {exp1_seed}, {exp2_seed}")
+    print(f"Registered experiments with seeds: {exp1_seed, {exp2_seed}")
     
     # Test secure random generation
     print("\nTesting secure random generation:")
