@@ -1,3 +1,92 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "accessibility.signals.chatEditModifiedFile": {
+        "sound": "on"
+    },
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.autobuild.enabled": true,
+    "java.codeGeneration.insertionLocation": "afterCursor",
+    "java.codeGeneration.generateComments": true,
+    "java.codeAction.sortMembers.avoidVolatileChanges": false,
+    "java.codeGeneration.hashCodeEquals.useInstanceof": true,
+    "java.cleanup.actions": [
+        "renameFileToType",
+        "tryWithResource",
+        "addFinalModifier"
+    ],
+    "java.codeGeneration.hashCodeEquals.useJava7Objects": true,
+    "python.activeStateToolPath": "C:\\Users\\jeans\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python.autobuild": true,
+    "python.codeGeneration": true,
+    "python.Scripts.codeGeneration": true,
+    "go.Scripts.codeGeneration": true,
+
+    // Enhanced Copilot Configuration for Neural Processing
+    "github.copilot.chat.codeGeneration.instructions": "Process queries through established neural pathways: (1) Check short-term memory first (2) Consult long-term memory if needed (3) Provide 75-word summary before code generation (4) Wait for confirmation before major implementations. Maintain documentation of conscious (scrde.ca) and subconscious processing paths.",
+    
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true,
+        "scminput": false,
+        "yaml": true,
+        "neural-config": true
+    },
+
+    "github.copilot.advanced": {
+        "language.enableAutoCompletions": true,
+        "language.enableSnippets": true,
+        "suggest.enableCodeActions": true,
+        "suggest.enableQuickFixes": true,
+        "memory.enableShortTermTracking": true,
+        "memory.commitThreshold": 4,
+        "memory.longTermStorageValidation": true,
+        "processing.enableNeuralPathwayRouting": true,
+        "processing.consciousHost": "scrde.ca",
+        "processing.subconscious.enableDistributedProcessing": true
+    },
+
+    // Neural Processing Configuration
+    "github.copilot.neuralPathways": {
+        "cerebrum": {
+            "router": true,
+            "trafficControl": true,
+            "certificateValidation": true
+        },
+        "communication": {
+            "enablePSNCSNBridge": true,
+            "enableCorpusCallosumRouting": true
+        }
+    },
+
+    // Memory Management
+    "github.copilot.memoryManagement": {
+        "shortTerm": {
+            "maxCommits": 4,
+            "analysisRequired": true,
+            "contextPreservation": true
+        },
+        "longTerm": {
+            "importanceThreshold": "high",
+            "detailedAnalysis": true,
+            "persistentStorage": true
+        }
+    },
+
+    // Enhanced Editor Suggestions
+    "editor.inlineSuggest.enabled": true,
+    "editor.suggestSelection": "first",
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggest.showMethods": true,
+    "editor.suggest.showFunctions": true,
+    "editor.suggest.showVariables": true,
+    "editor.suggest.showClasses": true,
+    "editor.suggest.showProperties": true,
+    "editor.suggest.showConstants": true,
+    "editor.suggest.showConstructors": true,
+    "editor.suggest.showModules": true,
+    "editor.suggest.showKeywords": true,
+    "editor.suggest.showSnippets": true,
+    
+    // Neural Network Processing Delay
+    "editor.suggest.delay": 5000  // 5-second delay for major code generation
 }
