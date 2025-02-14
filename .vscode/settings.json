@@ -1,7 +1,11 @@
 {
     "accessibility.signals.chatEditModifiedFile": {
-        "sound": "on"
+        "sound": "on",
+        "language": "en-US"
     },
+    "accessibility.voice.speechLanguage": "en-US",
+    "accessibility.voice.autoSynthesize": "on",
+    "accessibility.voice.keywordActivation": "chatInContext",
     "java.compile.nullAnalysis.mode": "automatic",
     "java.autobuild.enabled": true,
     "java.codeGeneration.insertionLocation": "afterCursor",
