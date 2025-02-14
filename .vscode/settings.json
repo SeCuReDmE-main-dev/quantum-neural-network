@@ -21,7 +21,14 @@
     "go.Scripts.codeGeneration": true,
 
     // Enhanced Copilot Configuration for Neural Processing
-    "github.copilot.chat.codeGeneration.instructions": "Process queries through established neural pathways: (1) Check short-term memory first (2) Consult long-term memory if needed (3) Provide 75-word summary before code generation (4) Wait for confirmation before major implementations. Maintain documentation of conscious (scrde.ca) and subconscious processing paths.",
+    "github.copilot.chat.codeGeneration.instructions": {
+        "queryProcessing": "Process queries through established neural pathways"},
+        "memoryCheck": "Check short-term memory first",
+        "memoryConsult": "Consult long-term memory if needed",
+        "summary": "Provide 75-word summary before code generation",
+        "confirmation": "Wait for confirmation before major implementations",
+        "documentation": "Maintain documentation of conscious and subconscious processing paths"
+    },
     
     "github.copilot.enable": {
         "*": true,
