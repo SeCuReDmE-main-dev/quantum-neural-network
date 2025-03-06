@@ -291,6 +291,68 @@ Integrates a brain structure model into the neural network, enhancing decision-m
 3. **Verify the connection**:
    Ensure that MindsDB is running and properly configured to connect to the PostgreSQL database. Check the MindsDB logs for any connection-related messages or errors. Use a PostgreSQL client (e.g., `psql`, pgAdmin) to connect to the PostgreSQL database and verify that the database is accessible and the user has the necessary permissions. Execute a simple query through MindsDB to test the connection.
 
+## Neural Flywheel Integration
+
+1. **Add neural_flywheel as a submodule**:
+
+   ```bash
+   git submodule add https://github.com/Celebrum/neural_flywheel.git neural_flywheel
+   ```
+
+2. **Initialize and update the submodule**:
+
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+3. **Add dependencies for neural_flywheel**:
+   Update the `build.gradle` file with the necessary dependencies:
+
+   ```gradle
+   dependencies {
+       implementation 'org.apache.iceberg:iceberg-core:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-spark3-runtime:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-hive-metastore:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-parquet:0.12.0'
+       implementation 'org.apache.iceberg:iceberg-flink-runtime:0.12.0'
+       implementation 'com.quantum.circuit:quantum-circuit-designer:1.0.0'
+       implementation 'org.qiskit:qiskit-core:0.23.0'
+       implementation 'org.qiskit:qiskit-aer:0.8.0'
+       implementation 'org.qiskit:qiskit-ibmq-provider:0.12.0'
+       implementation 'org.jfree:jfreechart:1.5.3'
+       implementation 'org.jfree:jcommon:1.0.24'
+       implementation 'org.apache.commons:commons-math3:3.6.1'
+       implementation 'org.ejml:ejml-all:0.38'
+       implementation 'org.numpy:numpy:1.21.0'
+       implementation 'org.matplotlib:matplotlib:3.4.2'
+       implementation 'org.sklearn:sklearn:0.24.2'
+       implementation 'org.cryptography:cryptography:3.4.7'
+       implementation 'org.pytorch:torch:1.9.0'
+       implementation 'org.torchquantum:torchquantum:0.1.0'
+       implementation 'org.apache.ignite:ignite-core:2.14.0'
+       implementation 'org.apache.mahout:mahout-core:14.1.0'
+       testImplementation 'junit:junit:4.13.2'
+       testImplementation 'org.mockito:mockito-core:3.9.0'
+       implementation 'net.sf.ucanaccess:ucanaccess:5.0.1'
+       implementation 'com.healthmarketscience.jackcess:jackcess:4.0.1'
+       implementation 'org.hsqldb:hsqldb:2.7.1'
+       implementation 'commons-logging:commons-logging:1.2'
+       implementation 'commons-lang:commons-lang:2.6'
+       implementation 'net.sourceforge.jtds:jtds:1.3.1'
+       implementation 'com.microsoft.sqlserver:mssql-jdbc:9.4.0.jre11'
+   }
+   ```
+
+4. **Create the neural_flywheel directory**:
+   Create the directory `neural_flywheel` in the project root.
+
+5. **Initialize and update the submodule**:
+   Run the following commands to initialize and update the submodule:
+
+   ```bash
+   git submodule update --init --recursive
+   ```
+
 ## Testing
 
 To run the tests, use the following command:
