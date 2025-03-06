@@ -1,0 +1,3 @@
+[submodule "neural_flywheel"]
+    path = neural_flywheel
+    url = https://github.com/Celebrum/neural_flywheel.git
