@@ -1,0 +1,13 @@
+# Target labels
+ libxcfun
+# Source files and their labels
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/libxcfun
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/98b86bb357119353e1f09d83bbf8a13d/libxcfun.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/ab45a414c5e79129bce861e94420c793/libxcfun-complete.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-build.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-configure.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-download.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-install.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-mkdir.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-patch.rule
+D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/1af30d04aed2caf80264653de481eabe/libxcfun-update.rule
