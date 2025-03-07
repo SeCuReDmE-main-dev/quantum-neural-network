@@ -1,8 +1,8 @@
-# Install script for directory: D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf
+# Install script for directory: D:/server-database-prefab/quantum-neural-network/phi_framework
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/CMAKE_TRY_COMPILE")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Project")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -35,7 +35,7 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf/install_local_manifest.txt"
+  file(WRITE "D:/server-database-prefab/quantum-neural-network/phi_framework/build/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -51,6 +51,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "D:/server-database-prefab/quantum-neural-network/phi_framework/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

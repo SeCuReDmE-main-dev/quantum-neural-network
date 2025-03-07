@@ -1,2 +1,0 @@
-D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf/CMakeFiles/cmTC_fb239.dir
-D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf/CMakeFiles/ALL_BUILD.dir

@@ -118,3 +118,167 @@ events:
       The CXX compiler identification is MSVC, found in:
         D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/3.31.6/CompilerIdCXX/CompilerIdCXX.exe
       
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-deoved"
+      binary: "D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-deoved"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-deoved'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Preview/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_a7174.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.0-preview-25105-02+915bcd94d for .NET Framework
+        Build started 2025-03-06 10:13:21 PM.
+        
+        Project "D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-deoved\\cmTC_a7174.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_a7174.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-deoved\\Debug\\".
+          Creating directory "cmTC_a7174.dir\\Debug\\cmTC_a7174.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_a7174.dir\\Debug\\cmTC_a7174.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_a7174.dir\\Debug\\cmTC_a7174.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Preview\\VC\\Tools\\MSVC\\14.44.34823\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a7174.dir\\Debug\\\\" /Fd"cmTC_a7174.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\jeans\\Miniconda3\\envs\\ffed-quantum\\Library\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.44.34823.2 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a7174.dir\\Debug\\\\" /Fd"cmTC_a7174.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "C:\\Users\\jeans\\Miniconda3\\envs\\ffed-quantum\\Library\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          CMakeCCompilerABI.c
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Preview\\VC\\Tools\\MSVC\\14.44.34823\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-deoved\\Debug\\cmTC_a7174.exe" /INCREMENTAL /ILK:"cmTC_a7174.dir\\Debug\\cmTC_a7174.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-deoved/Debug/cmTC_a7174.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-deoved/Debug/cmTC_a7174.lib" /MACHINE:X64  /machine:x64 cmTC_a7174.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_a7174.vcxproj -> D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-deoved\\Debug\\cmTC_a7174.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_a7174.dir\\Debug\\cmTC_a7174.tlog\\unsuccessfulbuild".
+          Touching "cmTC_a7174.dir\\Debug\\cmTC_a7174.tlog\\cmTC_a7174.lastbuildstate".
+        Done Building Project "D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-deoved\\cmTC_a7174.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:03.05
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.44.34823/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt"
+    message: |
+      Running the C compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.44.34823/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.44.34823.2
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf"
+      binary: "D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Preview/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_fb239.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.14.0-preview-25105-02+915bcd94d for .NET Framework
+        Build started 2025-03-06 10:13:26 PM.
+        
+        Project "D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4mmisf\\cmTC_fb239.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_fb239.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4mmisf\\Debug\\".
+          Creating directory "cmTC_fb239.dir\\Debug\\cmTC_fb239.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_fb239.dir\\Debug\\cmTC_fb239.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_fb239.dir\\Debug\\cmTC_fb239.tlog\\unsuccessfulbuild".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Preview\\VC\\Tools\\MSVC\\14.44.34823\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_fb239.dir\\Debug\\\\" /Fd"cmTC_fb239.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\jeans\\Miniconda3\\envs\\ffed-quantum\\Library\\share\\cmake-3.31\\Modules\\CMakeCXXCompilerABI.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.44.34823.2 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_fb239.dir\\Debug\\\\" /Fd"cmTC_fb239.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /errorReport:queue "C:\\Users\\jeans\\Miniconda3\\envs\\ffed-quantum\\Library\\share\\cmake-3.31\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Preview\\VC\\Tools\\MSVC\\14.44.34823\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4mmisf\\Debug\\cmTC_fb239.exe" /INCREMENTAL /ILK:"cmTC_fb239.dir\\Debug\\cmTC_fb239.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf/Debug/cmTC_fb239.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/server-database-prefab/quantum-neural-network/phi_framework/build/CMakeFiles/CMakeScratch/TryCompile-4mmisf/Debug/cmTC_fb239.lib" /MACHINE:X64  /machine:x64 cmTC_fb239.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_fb239.vcxproj -> D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4mmisf\\Debug\\cmTC_fb239.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_fb239.dir\\Debug\\cmTC_fb239.tlog\\unsuccessfulbuild".
+          Touching "cmTC_fb239.dir\\Debug\\cmTC_fb239.tlog\\cmTC_fb239.lastbuildstate".
+        Done Building Project "D:\\server-database-prefab\\quantum-neural-network\\phi_framework\\build\\CMakeFiles\\CMakeScratch\\TryCompile-4mmisf\\cmTC_fb239.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:02.48
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.44.34823/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Users/jeans/Miniconda3/envs/ffed-quantum/Library/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Tools/MSVC/14.44.34823/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.44.34823.2
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+...
