@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\jeans\Miniconda3\envs\ffed-quantum\Library\share\cmake-3.31\Modules\CMakeCXXCompilerABI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{DA5E8F45-8802-3FCD-9E47-56A8A207E589}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
