@@ -594,3 +594,32 @@ Run the verification suite:
 - [Architecture Documentation](../docs/wiki/Architecture.md)
 - [API Reference](../docs/wiki/API-Reference.md)
 - [Quantum Neural Guide](../docs/wiki/Quantum-Neural.md)
+
+## PowerShell Script Execution Order
+
+To ensure the correct order of the PowerShell scripts, follow this sequence:
+
+1. `install_iis_base.ps1`
+2. `install_iis_components.ps1`
+3. `install_iis_core_modules.ps1`
+4. `install_iis_modules.ps1`
+5. `install_iis_prerequisites.ps1`
+6. `fix_iis_prerequisites.ps1`
+7. `configure_iis_native.ps1`
+8. `configure_fastcgi.ps1`
+9. `configure_brain_parts.ps1`
+10. `configure_dream_processor.ps1`
+11. `fix_iis_bindings.ps1`
+12. `setup_fastcgi.ps1`
+13. `setup_health_checks.ps1`
+14. `validate_iis_setup.ps1`
+15. `check_iis_status.ps1`
+
+## SeCuReDmE Color Scheme
+
+The SeCuReDmE color scheme includes the following colors:
+
+- Deep Blue (#1B263B)
+- Metallic Silver (#4F5D75)
+- Teal (#00A99D)
+- Orange (#F76C6C)

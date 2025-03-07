@@ -3,6 +3,8 @@
   "features": {
   },
   "tasks": {
-    "build": "pip install -r requirements.txt"
+    "build": "gradle build",
+    "test": "gradle test ",
+    "launch": "gradle run"
   }
 }
