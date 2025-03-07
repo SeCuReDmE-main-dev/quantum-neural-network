@@ -8,18 +8,27 @@
 		<buildCommand>
 			<name>java.bs.JavaProblemChecker</name>
 			<arguments>
+				<dictionary>
+					<key>extraLibs</key>
+					<value>blas;openblas</value>
+				</dictionary>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
 			<name>com.microsoft.gradle.bs.importer.builder.BuildServerBuilder</name>
 			<triggers>full,incremental,</triggers>
 			<arguments>
+				<dictionary>
+					<key>requiredLibs</key>
+					<value>blas;openblas</value>
+				</dictionary>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>com.microsoft.gradle.bs.importer.GradleBuildServerProjectNature</nature>
+		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
 	<filteredResources>
 		<filter>

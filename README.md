@@ -52,8 +52,8 @@ Integrates a brain structure model into the neural network, enhancing decision-m
 2. **Install dependencies**:
 
    ```bash
-   pip install -r requirements.txt
-   ```
+   pip install -r requirements.txtls
+   
 
 3. **Run the neural network**:
 
