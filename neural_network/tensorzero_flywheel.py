@@ -79,9 +79,44 @@ class PersonaSwitchManager:
                 emotional_support_level=0.5,
                 language_complexity=1.0,
                 stem_focus=0.9
+            ),
+            "notebook_llm": PersonaConfig(
+                name="notebook_llm",
+                age_range=(20, None),  # Mature LLM system
+                learning_focus=[
+                    "documentation_synthesis",
+                    "code_analysis",
+                    "knowledge_integration",
+                    "system_architecture",
+                    "technical_writing"
+                ],
+                emotional_support_level=0.4,  # Professional focus
+                language_complexity=1.0,  # Full technical capacity
+                stem_focus=1.0,  # Maximum technical depth
+                integration_points={
+                    "mindsdb": {
+                        "model_name": "notebook_llm",
+                        "temperature": 0.3,
+                        "max_tokens": 2048,
+                        "project_name": "SeCuReDmE_documentation"
+                    },
+                    "codeproject_ai": {
+                        "analysis_mode": "technical",
+                        "code_focus": True,
+                        "architecture_analysis": True
+                    }
+                },
+                special_capabilities={
+                    "documentation_synthesis": True,
+                    "code_review": True,
+                    "architecture_analysis": True,
+                    "system_integration": True,
+                    "knowledge_base_access": True,
+                    "context_preservation": True
+                }
             )
         }
-    
+        
     def switch_persona(self, persona_name: str) -> Dict[str, Any]:
         """Switch to a different AI persona"""
         if persona_name not in self.personas:
@@ -108,6 +143,36 @@ class PersonaSwitchManager:
             if config.age_range[0] <= age <= config.age_range[1]:
                 return self.switch_persona(name)
         raise ValueError(f"No suitable persona found for age {age}")
+    
+    def activate_notebook_llm(self) -> Dict[str, Any]:
+        """Activate the NotebookLLM specialized persona"""
+        if "notebook_llm" not in self.personas:
+            raise KeyError("NotebookLLM persona not initialized")
+            
+        result = self.switch_persona("notebook_llm")
+        
+        # Configure specialized LLM settings
+        llm_params = {
+            "model_name": "SeCuReDmE_notebook",
+            "temperature": 0.3,  # Consistent, focused responses
+            "max_tokens": 2048,  # Long-form documentation
+            "top_p": 0.9,
+            "top_k": 40,
+            "request_timeout": 120,  # Extended for complex analysis
+            "format": "markdown",
+            "headers": {
+                "X-Special-Context": "documentation",
+                "X-Architecture-Mode": "analysis"
+            }
+        }
+        
+        return {
+            "status": "activated",
+            "previous": result["previous"],
+            "current": result["current"],
+            "config": result["config"],
+            "llm_params": llm_params
+        }
 
 class TensorZeroFlywheel:
     """Neural bridge with auto-iteration capabilities"""
