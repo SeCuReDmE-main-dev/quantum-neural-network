@@ -109,35 +109,6 @@ class PersonaSwitchManager:
                 return self.switch_persona(name)
         raise ValueError(f"No suitable persona found for age {age}")
 
-    def activate_notebook_llm(self) -> Dict[str, Any]:
-        """Activate the specialized NotebookLLM secretary mode"""
-        if "notebook_llm" not in self.personas:
-            raise KeyError("NotebookLLM persona not initialized")
-            
-        result = self.switch_persona("notebook_llm")
-        
-        # Configure specialized processing params
-        processing_params = {
-            "max_chars": 500,
-            "analysis_mode": "comprehensive",
-            "focus_areas": [
-                "code_changes",
-                "documentation_updates",
-                "system_integration",
-                "repository_status"
-            ],
-            "output_format": "concise",
-            "tech_validation": True
-        }
-        
-        return {
-            "status": "activated",
-            "previous": result["previous"],
-            "current": result["current"],
-            "config": result["config"],
-            "processing": processing_params
-        }
-
 class TensorZeroFlywheel:
     """Neural bridge with auto-iteration capabilities"""
     
