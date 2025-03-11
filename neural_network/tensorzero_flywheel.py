@@ -25,12 +25,8 @@ class PersonaConfig:
     age_range: Tuple[int, int]
     learning_focus: List[str]
     emotional_support_level: float
-    language_complexity: float
+    language_complexity: float 
     stem_focus: float
-    integration_points: Optional[Dict[str, Dict[str, Any]]] = None
-    character_limit: int = 500
-    tech_focus: bool = False
-    code_comprehension: bool = False
 
 class PersonaSwitchManager:
     """Manages transitions between AI personas based on developmental stages"""
@@ -83,18 +79,6 @@ class PersonaSwitchManager:
                 emotional_support_level=0.5,
                 language_complexity=1.0,
                 stem_focus=0.9
-            ),
-            "notebook_llm": PersonaConfig(
-                name="notebook_llm", 
-                age_range=(20, None),
-                learning_focus=["code_analysis", "docs", "repo_sync"],
-                emotional_support_level=0.4,
-                language_complexity=1.0,
-                stem_focus=1.0,
-                integration_points={
-                    "mindsdb": {"mode": "technical"},  # Removed character limit
-                    "codeproject": {"analysis": True, "verify": True}
-                }
             )
         }
         
