@@ -85,17 +85,14 @@ class PersonaSwitchManager:
                 stem_focus=0.9
             ),
             "notebook_llm": PersonaConfig(
-                name="notebook_llm",
-                age_range=(20, None),  # Mature LLM system
-                learning_focus=["documentation", "code_analysis", "system_integration"],
-                emotional_support_level=0.4,  # Professional focus
-                language_complexity=1.0,  # Technical vocabulary
-                stem_focus=1.0,  # Maximum technical capability
-                character_limit=500,  # Note analysis limit
-                tech_focus=True,
-                code_comprehension=True,
+                name="notebook_llm", 
+                age_range=(20, None),
+                learning_focus=["code_analysis", "docs", "repo_sync"],
+                emotional_support_level=0.4,
+                language_complexity=1.0,
+                stem_focus=1.0,
                 integration_points={
-                    "mindsdb": {"mode": "technical", "tokens": 500},
+                    "mindsdb": {"mode": "technical"},  # Removed character limit
                     "codeproject": {"analysis": True, "verify": True}
                 }
             )
